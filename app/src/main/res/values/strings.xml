@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Electricity Monitoring</string>
+
+
+    <string name="enter_valid_email">Enter Valid Email</string>
+
+    <string name="please_enter_password">Please enter password</string>
+    <string name="password_dont_match">Passwords don\'t match</string>
+    <string name="please_enter_password_confirmation">Please enter password confirmation</string>
+    <string name="please_enter_address">Please enter address</string>
+    <string name="please_enter_firstname">Please enter first name</string>
+    <string name="please_enter_lastname">Please enter last name</string>
+    <string name="please_enter_meternumber">Please enter meter number</string>
+
+    <string name="please_wait">Please wait. . .</string>
+    <string name="no_network_connection">No network connection</string>
+    <string name="invalid_email_or_password">Invalid email or password!</string>
+    <string name="failed_registering">Failed registering!</string>
+
+</resources>
