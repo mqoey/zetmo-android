@@ -12,9 +12,30 @@
     <string name="please_enter_lastname">Please enter last name</string>
     <string name="please_enter_meternumber">Please enter meter number</string>
 
+    <string name="please_enter_appliance_name">Please enter appliance name</string>
+    <string name="please_enter_appliance_description">Please enter appliance description</string>
+    <string name="please_enter_appliance_years">Please enter appliance years</string>
+    <string name="please_enter_appliance_consumption">Please enter appliance consumption</string>
+    <string name="please_enter_appliance_condition">Please enter appliance condition</string>
+
     <string name="please_wait">Please wait. . .</string>
     <string name="no_network_connection">No network connection</string>
-    <string name="invalid_email_or_password">Invalid email or password!</string>
+    <string name="invalid_email_or_password">Invalid meter number or password!</string>
     <string name="failed_registering">Failed registering!</string>
+
+    <string name="logout">Logout</string>
+    <string name="want_to_logout_from_app">Want to logout from app ?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="dont_have_account_register">Dont have account? Register</string>
+
+    <string name="search_here">Search Here. . . .</string>
+    <string name="appliances">Appliances</string>
+    <string name="add_appliance">Add Appliances</string>
+    <string name="view_appliance">View Appliances</string>
+
+    <string name="delete_appliance">Want to delete Appliance ?</string>
+    <string name="delete">Delete</string>
+    <string name="something_went_wrong">Something went wrong!</string>
 
 </resources>

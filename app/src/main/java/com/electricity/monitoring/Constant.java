@@ -8,12 +8,20 @@ public class Constant {
     }
 
     //For retrofit base url must end with /
-    public static final String BASE_URL = "http://zetmo.fkultimate.co.zw/api/";
+    public static final String BASE_URL = "https://zetmo.fkultimate.co.zw/api/";
     //We will use this to store the user token number into shared preference
     public static final String SHARED_PREF_NAME = "com.electricity.monitoring";
 
     public static final String SP_PASSWORD = "password";
     public static final String SP_EMAIL = "email";
+    public static final String SP_METER_NUMBER = "meter_number";
+
+    public static final String APPLIANCE_ID = "appliance_id";
+    public static final String APPLIANCE_NAME = "appliance_name";
+    public static final String APPLIANCE_DESCRIPTION = "appliance_description";
+    public static final String APPLIANCE_CONDITION = "appliance_condition";
+    public static final String APPLIANCE_CONSUMPTION = "appliance_consumption";
+    public static final String APPLIANCE_YEAR = "appliance_year";
 
     //all table names
     public static final String KEY_EMAIL= "email";

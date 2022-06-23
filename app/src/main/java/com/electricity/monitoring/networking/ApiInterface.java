@@ -15,7 +15,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("login")
     Call<Login> login(
-            @Field(Constant.KEY_EMAIL) String email,
+            @Field(Constant.KEY_METER_NUMBER) String meter_number,
             @Field(Constant.KEY_PASSWORD) String password);
 
     @FormUrlEncoded

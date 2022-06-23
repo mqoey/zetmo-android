@@ -3,23 +3,23 @@ package com.electricity.monitoring.model;
 import com.google.gson.annotations.SerializedName;
 
 public class Login {
-    @SerializedName("email")
-    private String email;
+    @SerializedName("meter_number")
+    private String meter_number;
 
     @SerializedName("password")
     private String password;
 
-    public Login(String email, String password) {
-        this.email = email;
+    public Login(String meter_number, String password) {
+        this.meter_number = meter_number;
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getMeter_number() {
+        return meter_number;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setMeter_number(String meter_number) {
+        this.meter_number = meter_number;
     }
 
     public String getPassword() {

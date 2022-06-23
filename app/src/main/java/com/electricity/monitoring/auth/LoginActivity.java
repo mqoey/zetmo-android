@@ -26,7 +26,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends BaseActivity {
 
-    EditText etxtEmail, etxtPassword;
+    EditText etxtMeterNumber, etxtPassword;
     TextView txtLogin, txtRegister;
     SharedPreferences sp;
     ProgressDialog loading;
@@ -39,7 +39,7 @@ public class LoginActivity extends BaseActivity {
 
         getSupportActionBar().hide();
 
-        etxtEmail = findViewById(R.id.etxt_email);
+        etxtMeterNumber = findViewById(R.id.etxt_email);
         etxtPassword = findViewById(R.id.etxt_password);
         txtLogin = findViewById(R.id.txt_login);
         txtRegister = findViewById(R.id.txt_register);
@@ -47,15 +47,15 @@ public class LoginActivity extends BaseActivity {
 
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
-        String email = sp.getString(Constant.SP_EMAIL, "");
+        String meter_number = sp.getString(Constant.SP_METER_NUMBER, "");
         String password = sp.getString(Constant.SP_PASSWORD, "");
 
-        etxtEmail.setText(email);
+        etxtMeterNumber.setText(meter_number);
         etxtPassword.setText(password);
 
-        if (email.length() >= 3 && password.length() >= 3) {
+        if (meter_number.length() >= 3 && password.length() >= 3) {
             if (utils.isNetworkAvailable(LoginActivity.this)) {
-                login(email, password);
+                login(meter_number, password);
             } else {
                 Toasty.error(this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
             }
@@ -70,18 +70,18 @@ public class LoginActivity extends BaseActivity {
         });
 
         txtLogin.setOnClickListener(v -> {
-            String email1 = etxtEmail.getText().toString().trim();
+            String meter_number1 = etxtMeterNumber.getText().toString().trim();
             String password1 = etxtPassword.getText().toString().trim();
 
-            if (email1.isEmpty() || !email1.contains("@") || !email1.contains(".")) {
-                etxtEmail.setError(getString(R.string.enter_valid_email));
-                etxtEmail.requestFocus();
+            if (meter_number1.isEmpty()) {
+                etxtMeterNumber.setError(getString(R.string.please_enter_meternumber));
+                etxtMeterNumber.requestFocus();
             } else if (password1.isEmpty()) {
                 etxtPassword.setError(getString(R.string.please_enter_password));
                 etxtPassword.requestFocus();
             } else {
                 if (utils.isNetworkAvailable(LoginActivity.this)) {
-                    login(email1, password1);
+                    login(meter_number1, password1);
                 } else {
                     Toasty.error(LoginActivity.this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
                 }
@@ -90,26 +90,26 @@ public class LoginActivity extends BaseActivity {
     }
 
     //login method
-    private void login(String email, String password) {
+    private void login(String meter_number, String password) {
         loading = new ProgressDialog(this);
         loading.setCancelable(false);
         loading.setMessage(getString(R.string.please_wait));
         loading.show();
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<Login> call = apiInterface.login(email, password);
+        Call<Login> call = apiInterface.login(meter_number, password);
         call.enqueue(new Callback<Login>() {
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
                 loading.dismiss();
                 if(response.code() == 200) {
                             SharedPreferences.Editor editor = sp.edit();
-                            editor.putString(Constant.SP_EMAIL, email);
+                            editor.putString(Constant.SP_METER_NUMBER, meter_number);
                             editor.putString(Constant.SP_PASSWORD, password);
                             editor.apply();
-
                     Toasty.success(LoginActivity.this, "Login successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 }
                 else{

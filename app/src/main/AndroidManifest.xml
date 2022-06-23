@@ -31,7 +31,16 @@
             android:exported="true" />
         <activity
             android:name=".auth.RegistrationActivity"
-            android:exported="true"/>
+            android:exported="true" />
+        <activity
+            android:name=".appliance.ApplianceActivity"
+            android:exported="true" />
+        <activity
+            android:name=".appliance.AddApplianceActivity"
+            android:exported="true" />
+        <activity
+            android:name=".appliance.ViewApplianceActivity"
+            android:exported="true" />
         <activity
             android:name=".SplashActivity"
             android:exported="true">
