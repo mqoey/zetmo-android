@@ -4,7 +4,7 @@ Is an electricity monitoring system
 
 ### Modules
 
-- Sale Tokens
-- Manage Clients
-- Update Tarrifs
-- Manage Loadshedding Schedules
+- View Tokens
+- View Tarrifs
+- View Loadshedding Schedules
+- Manage Appliances
