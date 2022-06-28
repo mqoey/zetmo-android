@@ -2,8 +2,8 @@ package com.electricity.monitoring.api;
 
 
 import com.electricity.monitoring.Constant;
+import com.electricity.monitoring.model.ClientNeighbourhood;
 import com.electricity.monitoring.model.Neighbourhood;
-import com.electricity.monitoring.model.Registration;
 import com.electricity.monitoring.model.Tarrif;
 import com.electricity.monitoring.model.User;
 
@@ -25,7 +25,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("register")
-    Call<Registration> register(
+    Call<User> register(
             @Field(Constant.KEY_EMAIL) String email,
             @Field(Constant.KEY_PASSWORD) String password,
             @Field(Constant.KEY_ADDRESS) String address,
@@ -38,4 +38,11 @@ public interface ApiInterface {
 
     @GET("tarrif")
     Call<Tarrif> getTarrif();
+
+    @FormUrlEncoded
+    @POST("clientneighbourhood")
+    Call<ClientNeighbourhood> clientneighbourhood(
+            @Field("client_id") String client_id,
+            @Field("neighbourhood_id") String neighbourhood_id
+    );
 }

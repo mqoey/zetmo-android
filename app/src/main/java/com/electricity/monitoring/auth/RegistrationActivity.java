@@ -8,13 +8,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.model.Registration;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
+import com.electricity.monitoring.model.User;
 import com.electricity.monitoring.utils.Utils;
 
 import es.dmoral.toasty.Toasty;
@@ -109,25 +108,26 @@ public class RegistrationActivity extends AppCompatActivity {
         loading.show();
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<Registration> call = apiInterface.register(email, password, address, meter_number, first_name, last_name);
-        call.enqueue(new Callback<Registration>() {
+        Call<User> call = apiInterface.register(email, password, address, meter_number, first_name, last_name);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<Registration> call, @NonNull Response<Registration> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 loading.dismiss();
-
                 if (response.code() == 200) {
-                    Toasty.success(RegistrationActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
+                    Toasty.success(RegistrationActivity.this, "Registered successfully " + response.body().getId(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegistrationActivity.this, HomeRegistrationActivity.class);
+                    intent.putExtra("USERID", response.body().getId());
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
-                    Toasty.error(RegistrationActivity.this, "Error on registration", Toast.LENGTH_SHORT).show();
+                    Toasty.error(RegistrationActivity.this, "Email or meter number already registered", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
-            public void onFailure(Call<Registration> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 loading.dismiss();
-                Toasty.error(RegistrationActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toasty.error(RegistrationActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
             }
         });
     }

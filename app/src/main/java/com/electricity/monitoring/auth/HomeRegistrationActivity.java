@@ -29,11 +29,11 @@ public class HomeRegistrationActivity extends AppCompatActivity {
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     EditText etxtSearch;
-    private RecyclerView recyclerView;
-    private ArrayList<Neighbourhood> neighbourhoodArrayList;
-    private NeighbourhoodAdapter neighbourhoodAdapter;
     ProgressDialog loading;
+    private RecyclerView recyclerView;
+    private NeighbourhoodAdapter neighbourhoodAdapter;
     private ShimmerFrameLayout mShimmerViewContainer;
+    public String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,8 @@ public class HomeRegistrationActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.neighbourhood_recyclerview);
         etxtSearch = findViewById(R.id.etxt_search2);
+
+        userID = getIntent().getExtras().getString("USERID");
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
@@ -53,10 +55,11 @@ public class HomeRegistrationActivity extends AppCompatActivity {
         //set color of swipe refresh
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
 
-        neighbourhoodArrayList = new ArrayList<>();
-        getNeighbourhoods();
-//        recyclerView.setVisibility(View.VISIBLE);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
+        recyclerView.setHasFixedSize(true);
 
+        getNeighbourhoods();
     }
 
     private void getNeighbourhoods() {
@@ -70,14 +73,29 @@ public class HomeRegistrationActivity extends AppCompatActivity {
         call.enqueue(new Callback<ArrayList<Neighbourhood>>() {
             @Override
             public void onResponse(Call<ArrayList<Neighbourhood>> call, Response<ArrayList<Neighbourhood>> response) {
+                loading.dismiss();
+
                 if (response.isSuccessful()) {
-                    loading.dismiss();
+
+                    ArrayList<Neighbourhood> neighbourhoodArrayList;
                     neighbourhoodArrayList = response.body();
-                    for (int i = 0; i < neighbourhoodArrayList.size(); i++) {
+
+                    Toasty.success(HomeRegistrationActivity.this, "Got data " + neighbourhoodArrayList.size(), Toast.LENGTH_SHORT).show();
+
+                    if (neighbourhoodArrayList.isEmpty()) {
+
+                        recyclerView.setVisibility(View.GONE);
+                        //Stopping Shimmer Effects
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.GONE);
+
+                    } else {
+                        //Stopping Shimmer Effects
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.GONE);
+
+                        recyclerView.setVisibility(View.VISIBLE);
                         neighbourhoodAdapter = new NeighbourhoodAdapter(neighbourhoodArrayList, HomeRegistrationActivity.this);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(HomeRegistrationActivity.this);
-                        recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
-                        recyclerView.setHasFixedSize(true);
                         recyclerView.setAdapter(neighbourhoodAdapter);
                     }
                 }
@@ -86,44 +104,18 @@ public class HomeRegistrationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ArrayList<Neighbourhood>> call, Throwable t) {
                 loading.dismiss();
-                System.out.println("----mq----error");
-                System.out.println("neighb" + t.getMessage());
-
                 Toasty.error(HomeRegistrationActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-//    public ArrayList<Neighbourhood> getNeighbourhoods() {
-//        loading = new ProgressDialog(this);
-//        loading.setCancelable(false);
-//        loading.setMessage(getString(R.string.please_wait));
-//        loading.show();
-//
-//        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-//        Call<ArrayList<Neighbourhood>> call = apiInterface.getNeighbourhoods();
-//        call.enqueue(new Callback<ArrayList<Neighbourhood>>() {
-//            @Override
-//            public void onResponse(Call<ArrayList<Neighbourhood>> call, Response<ArrayList<Neighbourhood>> response) {
-//                loading.dismiss();
-//                System.out.println("----mq----");
-//                if (response.code() == 200) {
-//                    ArrayList<Neighbourhood> neighbourhoodArrayList = response.body();
-//                    System.out.println("neighb" + neighbourhoods.get(0));
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<Neighbourhood>> call, Throwable t) {
-//                loading.dismiss();
-//                System.out.println("----mq----error");
-//                System.out.println("neighb" + t.getMessage());
-//
-//                Toasty.error(HomeRegistrationActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        return neighbourhoodArrayList;
+//    public String getUserID(){
+//        return userID;
 //    }
 
+
+    public String getUserID() {
+        return userID;
+    }
 
 }
