@@ -8,12 +8,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.electricity.monitoring.R;
 import com.electricity.monitoring.model.Registration;
-import com.electricity.monitoring.networking.ApiClient;
-import com.electricity.monitoring.networking.ApiInterface;
+import com.electricity.monitoring.api.ApiClient;
+import com.electricity.monitoring.api.ApiInterface;
 import com.electricity.monitoring.utils.Utils;
 
 import es.dmoral.toasty.Toasty;
@@ -111,11 +112,12 @@ public class RegistrationActivity extends AppCompatActivity {
         Call<Registration> call = apiInterface.register(email, password, address, meter_number, first_name, last_name);
         call.enqueue(new Callback<Registration>() {
             @Override
-            public void onResponse(Call<Registration> call, Response<Registration> response) {
+            public void onResponse(Call<Registration> call, @NonNull Response<Registration> response) {
                 loading.dismiss();
+
                 if (response.code() == 200) {
                     Toasty.success(RegistrationActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(RegistrationActivity.this, HomeRegistrationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {

@@ -106,7 +106,7 @@
                     android:weightSum="3">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/card_customers"
+                        android:id="@+id/card_profile"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -142,7 +142,7 @@
                         android:background="@color/colorPrimary" />
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/card_suppliers"
+                        android:id="@+id/card_tarrifs"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1">

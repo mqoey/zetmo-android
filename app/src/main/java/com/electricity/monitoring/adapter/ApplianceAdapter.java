@@ -22,10 +22,10 @@ import com.electricity.monitoring.utils.Utils;
 import java.io.File;
 import java.util.ArrayList;
 
-public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyViewHolder>{
+public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyViewHolder> {
 
-    private ArrayList<Appliance> applianceData;
-    private Context context;
+    private final ArrayList<Appliance> applianceData;
+    private final Context context;
     Utils utils;
     SharedPreferences sp;
 
@@ -46,10 +46,7 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull ApplianceAdapter.MyViewHolder holder, int position) {
 
-        final String appliance_id = applianceData.get(position).getApplianceId();
         String name = applianceData.get(position).getApplianceName();
-        String description = applianceData.get(position).getApplianceDescription();
-        String years = applianceData.get(position).getApplianceYears();
         String condition = applianceData.get(position).getApplianceCondition();
         String consumption = applianceData.get(position).getApplianceConsumption();
         String image = applianceData.get(position).getApplianceImage();
@@ -81,7 +78,7 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView txtApplianceName, txtApplianceCondition, txtApplianceConsumption;
-        ImageView imgDelete, applianceImage;
+        ImageView applianceImage;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,7 +87,6 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
             txtApplianceCondition = itemView.findViewById(R.id.txt_condition_supplier);
             txtApplianceConsumption = itemView.findViewById(R.id.txt_appliance_consumption);
 
-//            imgDelete = itemView.findViewById(R.id.img_delete);
             applianceImage = itemView.findViewById(R.id.product_image);
 
             itemView.setOnClickListener(this);
@@ -101,8 +97,6 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
             Intent i = new Intent(context, ViewApplianceActivity.class);
             i.putExtra(Constant.APPLIANCE_ID, applianceData.get(getAdapterPosition()).getApplianceId());
             context.startActivity(i);
-
         }
     }
-
 }

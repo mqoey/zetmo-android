@@ -1,4 +1,4 @@
-package com.electricity.monitoring.networking;
+package com.electricity.monitoring.api;
 
 import com.electricity.monitoring.Constant;
 import com.google.gson.Gson;

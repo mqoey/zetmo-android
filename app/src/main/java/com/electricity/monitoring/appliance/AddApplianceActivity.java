@@ -21,8 +21,6 @@ import in.mayanknagwanshi.imagepicker.ImageSelectActivity;
 
 public class AddApplianceActivity extends BaseActivity {
 
-    ProgressDialog loading;
-
     EditText etxtApplianceName, etxtApplianceYears, etxtApplianceDescription, etxtApplianceConsumption, etxtApplianceCondition;
     TextView txtAddAppliance;
     ImageView imgAppliance;

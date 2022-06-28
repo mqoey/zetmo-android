@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -93,6 +94,15 @@ public class ViewApplianceActivity extends AppCompatActivity {
                         .show();
             }
         });
+
+        editAppliance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ViewApplianceActivity.this, EditApplianceActivity.class);
+                intent.putExtra(Constant.APPLIANCE_ID, applianceID);
+                startActivity(intent);
+            }
+        });
     }
 
     public void getAppliance(String applianceID){
@@ -125,5 +135,15 @@ public class ViewApplianceActivity extends AppCompatActivity {
                         .into(viewImage);
             }
         }
+    }
+
+    //for back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

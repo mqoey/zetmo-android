@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.electricity.monitoring">
+    package="com.electricity.monitoring" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -19,7 +19,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ElectricityMonitoring"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="31" >
+        <activity
+            android:name=".tarrif.TarrifActivity"
+            android:exported="false" />
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.HomeRegistrationActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".service.StartOnBoot"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.TimeTrackerService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".appliance.EditApplianceActivity"
+            android:exported="false" />
         <activity
             android:name=".utils.BaseActivity"
             android:exported="false" />
@@ -43,7 +65,7 @@
             android:exported="true" />
         <activity
             android:name=".SplashActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

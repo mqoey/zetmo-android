@@ -13,9 +13,10 @@ import android.widget.Toast;
 import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.HomeActivity;
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.model.Login;
-import com.electricity.monitoring.networking.ApiClient;
-import com.electricity.monitoring.networking.ApiInterface;
+import com.electricity.monitoring.api.ApiClient;
+import com.electricity.monitoring.api.ApiInterface;
+import com.electricity.monitoring.database.DBHandler;
+import com.electricity.monitoring.model.User;
 import com.electricity.monitoring.utils.BaseActivity;
 import com.electricity.monitoring.utils.Utils;
 
@@ -31,6 +32,7 @@ public class LoginActivity extends BaseActivity {
     SharedPreferences sp;
     ProgressDialog loading;
     Utils utils;
+    DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class LoginActivity extends BaseActivity {
         txtLogin = findViewById(R.id.txt_login);
         txtRegister = findViewById(R.id.txt_register);
         utils = new Utils();
+
+        dbHandler = new DBHandler(LoginActivity.this);
 
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -97,27 +101,33 @@ public class LoginActivity extends BaseActivity {
         loading.show();
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<Login> call = apiInterface.login(meter_number, password);
-        call.enqueue(new Callback<Login>() {
+        Call<User> call = apiInterface.login(meter_number, password);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 loading.dismiss();
-                if(response.code() == 200) {
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putString(Constant.SP_METER_NUMBER, meter_number);
-                            editor.putString(Constant.SP_PASSWORD, password);
-                            editor.apply();
+                if (response.code() == 200) {
+
+                    String userID = response.body().getId();
+                    String name = response.body().getName();
+                    String email = response.body().getEmail();
+                    String password = response.body().getPassword();
+                    String address = response.body().getAddress();
+                    String meterNumber = response.body().getMeter_number();
+
+                    dbHandler.loginUser(userID, name, email, password, address, meterNumber);
+
                     Toasty.success(LoginActivity.this, "Login successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                }
-                else{
+                } else {
                     Toasty.error(LoginActivity.this, R.string.invalid_email_or_password, Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
-            public void onFailure(Call<Login> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 loading.dismiss();
                 Toasty.error(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }

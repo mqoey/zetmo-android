@@ -12,6 +12,9 @@ import android.view.View;
 
 import com.electricity.monitoring.appliance.ApplianceActivity;
 import com.electricity.monitoring.auth.LoginActivity;
+import com.electricity.monitoring.database.DBHandler;
+import com.electricity.monitoring.profile.ProfileActivity;
+import com.electricity.monitoring.tarrif.TarrifActivity;
 import com.electricity.monitoring.utils.BaseActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 
@@ -20,9 +23,10 @@ public class HomeActivity extends BaseActivity {
     //for double back press to exit
     private static final int TIME_DELAY = 2000;
     private static long backPressed;
-    CardView cardAppliances, cardProducts, cardSupplier, cardPos, cardOrderList, cardReport, cardSettings, cardExpense, cardLogout;
+    CardView cardAppliances, cardProducts, cardProfile, cardTarrifs, cardOrderList, cardReport, cardSettings, cardExpense, cardLogout;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
+    DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +39,29 @@ public class HomeActivity extends BaseActivity {
 
         cardLogout = findViewById(R.id.card_logout);
         cardAppliances = findViewById(R.id.card_appliances);
+        cardProfile = findViewById(R.id.card_profile);
+        cardTarrifs = findViewById(R.id.card_tarrifs);
+
+        dbHandler = new DBHandler(HomeActivity.this);
 
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sp.edit();
+
+        cardTarrifs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, TarrifActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cardProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
         cardAppliances.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +89,8 @@ public class HomeActivity extends BaseActivity {
                                 editor.putString(Constant.SP_METER_NUMBER, "");
                                 editor.putString(Constant.SP_PASSWORD, "");
                                 editor.apply();
+
+                                dbHandler.logoutUser();
 
                                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
