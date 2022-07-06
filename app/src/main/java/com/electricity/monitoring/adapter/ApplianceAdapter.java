@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,11 +18,19 @@ import com.bumptech.glide.Glide;
 import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.R;
 import com.electricity.monitoring.appliance.ViewApplianceActivity;
+import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.Appliance;
+import com.electricity.monitoring.service.TimeService;
 import com.electricity.monitoring.utils.Utils;
 
 import java.io.File;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import es.dmoral.toasty.Toasty;
 
 public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyViewHolder> {
 
@@ -28,8 +38,9 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
     private final Context context;
     Utils utils;
     SharedPreferences sp;
+    DBHandler dbHandler;
 
-    public ApplianceAdapter(Context context, ArrayList<Appliance> applianceData) {
+public ApplianceAdapter(Context context, ArrayList<Appliance> applianceData) {
         this.context = context;
         this.applianceData = applianceData;
         utils = new Utils();
@@ -50,10 +61,45 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
         String condition = applianceData.get(position).getApplianceCondition();
         String consumption = applianceData.get(position).getApplianceConsumption();
         String image = applianceData.get(position).getApplianceImage();
+        String applianceID = applianceData.get(position).getApplianceId();
 
         holder.txtApplianceName.setText(name);
         holder.txtApplianceConsumption.setText(consumption);
         holder.txtApplianceCondition.setText(condition);
+
+        holder.appliance_switch.setOnCheckedChangeListener((compoundButton, b) -> {
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String date = sdf.format(new Date());
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
+            String time = mdformat.format(calendar.getTime());
+
+            boolean value = true; // default value if no value was found
+
+//            SharedPreferences.Editor editor = getSharedPreferences("com.example.anubhaw.socialtwitter", MODE_PRIVATE).edit();
+//            final SharedPreferences sharedPreferences = getSharedPreferences("isChecked", 0);
+
+            value = sp.getBoolean("isChecked", value); // retrieve the value of your key
+            holder.appliance_switch.setChecked(value);
+
+            holder.appliance_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        dbHandler = new DBHandler(context);
+                        dbHandler.startApplianceTimer(applianceID, date, time);
+                        Toasty.success(context.getApplicationContext(), "Checked" + applianceID, Toasty.LENGTH_LONG).show();
+                        sp.edit().putBoolean("isChecked", true).apply();
+                    }else {
+                        dbHandler = new DBHandler(context);
+                        dbHandler.stopApplianceTimer(applianceID, date, time);
+                        Toasty.error(context.getApplicationContext(), "Not Checked", Toasty.LENGTH_LONG).show();
+                        sp.edit().putBoolean("isChecked", false).apply();;
+                    }
+                }
+            });
+        });
 
         File imageUrl = new File(image);
 
@@ -79,6 +125,8 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
 
         TextView txtApplianceName, txtApplianceCondition, txtApplianceConsumption;
         ImageView applianceImage;
+        Switch appliance_switch;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,8 +134,10 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
             txtApplianceName = itemView.findViewById(R.id.txt_appliance_name);
             txtApplianceCondition = itemView.findViewById(R.id.txt_condition_supplier);
             txtApplianceConsumption = itemView.findViewById(R.id.txt_appliance_consumption);
-
             applianceImage = itemView.findViewById(R.id.product_image);
+            appliance_switch = itemView.findViewById(R.id.switch_appliance);
+
+//            starter = timerStarter;
 
             itemView.setOnClickListener(this);
         }

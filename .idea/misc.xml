@@ -32,7 +32,9 @@
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_registration.xml" value="0.25" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_splash.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_tarrif.xml" value="0.20416666666666666" />
-        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_view_appliance.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_token.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_view_appliance.xml" value="0.25" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_view_token.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/appliance_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/content_home2.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/data_placeholder_layout.xml" value="0.19010416666666666" />
@@ -40,6 +42,8 @@
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/fragment_home.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/fragment_slideshow.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/neighbourhood_item.xml" value="0.2" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/notification_result.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/token_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/menu/activity_main_drawer.xml" value="0.1125" />
       </map>
     </option>

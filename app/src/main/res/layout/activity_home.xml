@@ -298,7 +298,7 @@
 
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/card_expense"
+                        android:id="@+id/card_tokens"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_weight="1">

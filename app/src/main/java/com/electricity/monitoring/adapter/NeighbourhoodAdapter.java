@@ -84,7 +84,7 @@ public class NeighbourhoodAdapter extends RecyclerView.Adapter<NeighbourhoodAdap
             neighbourhoodID = neighbourhoodData.get(getAdapterPosition()).getId();
 
             Intent i = new Intent(context, ClientNeighbourhoodActivity.class);
-            i.putExtra("USERID", userID);
+//            i.putExtra("USERID", userID);
             i.putExtra("NEIGHBOURHOODID", neighbourhoodID);
             context.startActivity(i);
         }

@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +37,7 @@ public class ApplianceActivity extends BaseActivity {
 
     ImageView imgNoProduct;
     EditText etxtSearch;
+
 
     FloatingActionButton fabAdd;
     private ShimmerFrameLayout mShimmerViewContainer;
@@ -115,7 +117,6 @@ public class ApplianceActivity extends BaseActivity {
 
         ArrayList<Appliance> applianceArrayList;
         applianceArrayList = dbHandler.getAppliances();
-
 
         if (applianceArrayList.isEmpty()) {
 

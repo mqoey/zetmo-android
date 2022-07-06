@@ -25,6 +25,8 @@ public class ClientNeighbourhoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_neighbourhood);
         userID = getIntent().getExtras().getString("USERID");
+        HomeRegistrationActivity homeRegistrationActivity = new HomeRegistrationActivity();
+//        userID = homeRegistrationActivity.getUserID();
         neighbourhoodID = getIntent().getExtras().getString("NEIGHBOURHOODID");
         Toasty.success(ClientNeighbourhoodActivity.this, "userid ++ " + userID + "  neighbou ++ " + neighbourhoodID, Toasty.LENGTH_LONG).show();
         postClientNeighbourhood(userID, neighbourhoodID);

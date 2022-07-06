@@ -5,6 +5,7 @@ import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.model.ClientNeighbourhood;
 import com.electricity.monitoring.model.Neighbourhood;
 import com.electricity.monitoring.model.Tarrif;
+import com.electricity.monitoring.model.Token;
 import com.electricity.monitoring.model.User;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
     //for login
@@ -44,5 +47,16 @@ public interface ApiInterface {
     Call<ClientNeighbourhood> clientneighbourhood(
             @Field("client_id") String client_id,
             @Field("neighbourhood_id") String neighbourhood_id
+    );
+
+    @GET("tokens")
+    Call<ArrayList<Token>> getTokens(
+            @Query("email") String email
+    );
+
+    @FormUrlEncoded
+    @POST
+    Call<Token> useToken(
+            @Field("token_id") String token_id
     );
 }

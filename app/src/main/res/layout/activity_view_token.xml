@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:background="?android:attr/selectableItemBackground"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,35 +12,6 @@
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:padding="10dp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:textSize="15dp"
-                android:gravity="center"
-                android:text="09:40" />
-
-            <View
-                android:layout_width="272dp"
-                android:layout_height="match_parent" />
-
-            <Switch
-                android:id="@+id/timer_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:gravity="right" />
-        </LinearLayout>
-
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view"
@@ -70,7 +41,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        app:srcCompat="@drawable/image_placeholder" />
+                        app:srcCompat="@drawable/logo" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -85,7 +56,7 @@
                             android:paddingLeft="5dp"
                             android:paddingRight="3dp"
                             android:paddingBottom="2dp"
-                            android:text="High Consumption"
+                            android:text="You can only view token once !!"
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             android:visibility="visible" />
@@ -98,88 +69,81 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/txt_view_name"
+                        android:id="@+id/txt_client_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
+
                         android:maxLines="1"
                         android:padding="4dp"
-                        android:text="Appliance Name"
+                        android:text="Client Name"
                         android:textSize="22sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/txt_view_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="4dp"
-                        android:text="Appliance Description"
-                        android:textSize="22sp" />
 
                     <TextView
-                        android:id="@+id/txt_view_condition"
+                        android:id="@+id/txt_token_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="4dp"
-                        android:text="Appliance Condition"
-                        android:textSize="22sp" />
 
-                    <TextView
-                        android:id="@+id/txt_view_consumption"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:padding="4dp"
-                        android:text="Appliance Consumption"
+                        android:textStyle="bold"
+                        android:text="Token Number"
                         android:textColor="@color/colorAccent"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txt_view_years"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="4dp"
-                        android:text="Appliance Years"
                         android:textSize="22sp" />
 
+                    <TextView
+                        android:id="@+id/txt_power_bought"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:padding="4dp"
+                        android:textSize="22sp"
+                        android:text="Power Bought"/>
+
+                    <TextView
+                        android:id="@+id/txt_amount_paid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:padding="4dp"
+                        android:textSize="22sp"
+                        android:text="Amount Paid"/>
+
+                    <TextView
+                        android:id="@+id/txt_meter_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:padding="4dp"
+                        android:textSize="22sp"
+                        android:text="Meter Number"/>
+
+                    <TextView
+                        android:id="@+id/txt_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:padding="4dp"
+                        android:textSize="22sp"
+                        android:text="Address"/>
+
                     <com.balysv.materialripple.MaterialRippleLayout
                         style="@style/RippleStyleWhite"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <Button
-                            android:id="@+id/btn_edit_appliance"
+                            android:id="@+id/btn_done"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:background="@color/colorPrimary"
                             android:padding="4dp"
-                            android:text="Edit Appliance"
-                            android:textColor="#fff"
-                            android:textStyle="bold" />
-
-                    </com.balysv.materialripple.MaterialRippleLayout>
-
-                    <com.balysv.materialripple.MaterialRippleLayout
-                        style="@style/RippleStyleWhite"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <Button
-                            android:id="@+id/btn_delete_appliance"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:background="@color/red"
-                            android:padding="4dp"
-                            android:text="Delete Appliance"
+                            android:text="Done"
                             android:textColor="#fff"
                             android:textStyle="bold" />
                     </com.balysv.materialripple.MaterialRippleLayout>
+
 
                 </LinearLayout>
             </LinearLayout>

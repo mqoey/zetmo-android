@@ -115,9 +115,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 loading.dismiss();
                 if (response.code() == 200) {
                     Toasty.success(RegistrationActivity.this, "Registered successfully " + response.body().getId(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(RegistrationActivity.this, HomeRegistrationActivity.class);
-                    intent.putExtra("USERID", response.body().getId());
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+//                    Intent intent = new Intent(RegistrationActivity.this, HomeRegistrationActivity.class);
+//                    intent.putExtra("USERID", response.body().getId());
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
                     Toasty.error(RegistrationActivity.this, "Email or meter number already registered", Toast.LENGTH_SHORT).show();
