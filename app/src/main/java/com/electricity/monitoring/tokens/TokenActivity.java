@@ -8,8 +8,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.electricity.monitoring.R;
@@ -42,6 +44,7 @@ public class TokenActivity extends AppCompatActivity {
     private ShimmerFrameLayout mShimmerViewContainer;
     Utils utils;
     DBHandler dbHandler;
+    ImageView imgNoToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class TokenActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.neighbourhood_recyclerview);
         etxtSearch = findViewById(R.id.etxt_search2);
+        imgNoToken = findViewById(R.id.image_no_product);
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
@@ -64,6 +68,7 @@ public class TokenActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
         recyclerView.setHasFixedSize(true);
+
 
 
         dbHandler = new DBHandler(TokenActivity.this);
@@ -88,24 +93,19 @@ public class TokenActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Token>> call, Response<ArrayList<Token>> response) {
                 loading.dismiss();
                 if (response.isSuccessful()) {
-
                     ArrayList<Token> tokenArrayList;
                     tokenArrayList = response.body();
 
                     Toasty.success(TokenActivity.this, "Got data " + tokenArrayList.size(), Toast.LENGTH_SHORT).show();
 
                     if (tokenArrayList.isEmpty()) {
-
                         recyclerView.setVisibility(View.GONE);
-                        //Stopping Shimmer Effects
                         mShimmerViewContainer.stopShimmer();
                         mShimmerViewContainer.setVisibility(View.GONE);
 
                     } else {
-                        //Stopping Shimmer Effects
                         mShimmerViewContainer.stopShimmer();
                         mShimmerViewContainer.setVisibility(View.GONE);
-
                         recyclerView.setVisibility(View.VISIBLE);
                         tokenAdapter = new TokenAdapter(tokenArrayList, TokenActivity.this);
                         recyclerView.setAdapter(tokenAdapter);
@@ -116,9 +116,23 @@ public class TokenActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ArrayList<Token>> call, Throwable t) {
                 loading.dismiss();
-                Toasty.error(TokenActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                recyclerView.setVisibility(View.GONE);
+                imgNoToken.setVisibility(View.VISIBLE);
+                imgNoToken.setImageResource(R.drawable.not_found);
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
+                Toasty.info(TokenActivity.this, "No Tokens found!!", Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
+    //for back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

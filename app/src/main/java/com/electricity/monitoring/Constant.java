@@ -15,6 +15,7 @@ public class Constant {
     public static final String SHARED_PREF_NAME = "com.electricity.monitoring";
 
     public static final String USER_ID = "user_id";
+    public static final String DATE = "date";
 
     public static final String SP_PASSWORD = "password";
     public static final String SP_EMAIL = "email";

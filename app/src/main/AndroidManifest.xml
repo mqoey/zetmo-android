@@ -21,7 +21,15 @@
         android:theme="@style/Theme.ElectricityMonitoring"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <service android:name=".service.TimeService"/>
+        <activity
+            android:name=".report.ViewReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".report.ReportActivity"
+            android:exported="false" />
+
+        <service android:name=".service.TimeService" />
+
         <activity
             android:name=".tokens.ViewTokenActivity"
             android:exported="false" />

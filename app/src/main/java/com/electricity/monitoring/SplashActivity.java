@@ -10,6 +10,10 @@ import android.os.Handler;
 import com.electricity.monitoring.auth.LoginActivity;
 import com.electricity.monitoring.database.DBHandler;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class SplashActivity extends AppCompatActivity {
 
 DBHandler dbHandler;
@@ -22,6 +26,16 @@ DBHandler dbHandler;
 
         dbHandler = new DBHandler(SplashActivity.this);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar calendar = Calendar.getInstance();
+        Calendar calendar1 = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        String yesterday = sdf.format(calendar.getTime());
+        String today = sdf.format(calendar1.getTime());
+
+//        dbHandler.updateifApplianceTimer(yesterday);
+        dbHandler.updatedApplianceTimer(yesterday, today);
+        dbHandler.updateApplianceTimer(yesterday);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();

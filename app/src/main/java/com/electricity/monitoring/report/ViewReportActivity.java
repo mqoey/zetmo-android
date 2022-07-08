@@ -1,6 +1,10 @@
-package com.electricity.monitoring.appliance;
+package com.electricity.monitoring.report;
 
-import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,122 +13,83 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.adapter.ApplianceAdapter;
+import com.electricity.monitoring.adapter.ViewReportAdapter;
 import com.electricity.monitoring.database.DBHandler;
-import com.electricity.monitoring.model.Appliance;
-import com.electricity.monitoring.utils.BaseActivity;
+import com.electricity.monitoring.model.ApplianceTime;
 import com.electricity.monitoring.utils.Utils;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-import es.dmoral.toasty.Toasty;
+public class ViewReportActivity extends AppCompatActivity {
 
-public class ApplianceActivity extends BaseActivity {
-
-    ApplianceAdapter applianceAdapter;
+    private RecyclerView recyclerView;
+    ViewReportAdapter viewReportAdapter;
     DBHandler dbHandler;
+
     ImageView imgNoProduct;
     EditText etxtSearch;
-    FloatingActionButton fabAdd;
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    private RecyclerView recyclerView;
+
     private ShimmerFrameLayout mShimmerViewContainer;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_appliance);
+        setContentView(R.layout.activity_view_appliance_report);
 
-        fabAdd = findViewById(R.id.fab_add);
         etxtSearch = findViewById(R.id.etxt_search);
-        imgNoProduct = findViewById(R.id.image_no_product);
+
+        Utils utils=new Utils();
+        dbHandler = new DBHandler(ViewReportActivity.this);
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_gradient));
-        getSupportActionBar().setTitle(R.string.appliances);
+        getSupportActionBar().setTitle("View Report");
 
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
-        mSwipeRefreshLayout = findViewById(R.id.swipeToRefresh);
+        mSwipeRefreshLayout =findViewById(R.id.swipeToRefresh);
         //set color of swipe refresh
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         recyclerView = findViewById(R.id.product_recyclerview);
-        imgNoProduct = findViewById(R.id.image_no_product);
+        imgNoProduct = findViewById(R.id.image_no_view_appliance);
 
         // set a GridLayoutManager with default vertical orientation and 3 number of columns
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
         recyclerView.setHasFixedSize(true);
+        ArrayList<ApplianceTime> applianceTimeArrayList;
 
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ApplianceActivity.this, AddApplianceActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
+        String date = getIntent().getExtras().getString(Constant.DATE);
 
-        Utils utils = new Utils();
-        dbHandler = new DBHandler(ApplianceActivity.this);
+        dbHandler = new DBHandler(ViewReportActivity.this);
+        applianceTimeArrayList = dbHandler.getAppliancesByDate(date);
 
-        //swipe refresh listeners
-        mSwipeRefreshLayout.setOnRefreshListener(() -> {
-
-            if (utils.isNetworkAvailable(ApplianceActivity.this)) {
-//                getProductsData("",shopID,ownerId);
-            } else {
-                Toasty.error(ApplianceActivity.this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
-            }
-
-
-            //after shuffle id done then swife refresh is off
-            mSwipeRefreshLayout.setRefreshing(false);
-        });
-
-
-//        if (utils.isNetworkAvailable(ApplianceActivity.this)) {
-////            //Load data from server
-////            getProductsData("",shopID,ownerId);
-//        } else {
-//            recyclerView.setVisibility(View.GONE);
-//            imgNoProduct.setVisibility(View.VISIBLE);
-//            imgNoProduct.setImageResource(R.drawable.not_found);
-//            mSwipeRefreshLayout.setVisibility(View.GONE);
-//            //Stopping Shimmer Effects
-//            mShimmerViewContainer.stopShimmer();
-//            mShimmerViewContainer.setVisibility(View.GONE);
-//            Toasty.error(this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
-//        }
-
-        ArrayList<Appliance> applianceArrayList;
-        applianceArrayList = dbHandler.getAppliances();
-
-        if (applianceArrayList.isEmpty()) {
+        if (applianceTimeArrayList.isEmpty()) {
 
             recyclerView.setVisibility(View.GONE);
             imgNoProduct.setVisibility(View.VISIBLE);
             imgNoProduct.setImageResource(R.drawable.not_found);
+            //Stopping Shimmer Effects
             mShimmerViewContainer.stopShimmer();
             mShimmerViewContainer.setVisibility(View.GONE);
 
         } else {
+            //Stopping Shimmer Effects
             mShimmerViewContainer.stopShimmer();
             mShimmerViewContainer.setVisibility(View.GONE);
+
             recyclerView.setVisibility(View.VISIBLE);
             imgNoProduct.setVisibility(View.GONE);
-            applianceAdapter = new ApplianceAdapter(ApplianceActivity.this, applianceArrayList);
-            recyclerView.setAdapter(applianceAdapter);
+            viewReportAdapter = new ViewReportAdapter(ViewReportActivity.this, applianceTimeArrayList);
+
+            recyclerView.setAdapter(viewReportAdapter);
         }
+
 
         etxtSearch.addTextChangedListener(new TextWatcher() {
 
@@ -144,7 +109,6 @@ public class ApplianceActivity extends BaseActivity {
 //                    getProductsData("",shopID,ownerId);
                 }
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 Log.d("data", s.toString());

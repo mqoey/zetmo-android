@@ -14,6 +14,7 @@ import com.electricity.monitoring.appliance.ApplianceActivity;
 import com.electricity.monitoring.auth.LoginActivity;
 import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.profile.ProfileActivity;
+import com.electricity.monitoring.report.ReportActivity;
 import com.electricity.monitoring.tarrif.TarrifActivity;
 import com.electricity.monitoring.tokens.TokenActivity;
 import com.electricity.monitoring.utils.BaseActivity;
@@ -43,11 +44,20 @@ public class HomeActivity extends BaseActivity {
         cardProfile = findViewById(R.id.card_profile);
         cardTarrifs = findViewById(R.id.card_tarrifs);
         cardTokens = findViewById(R.id.card_tokens);
+        cardReport = findViewById(R.id.card_reports);
 
         dbHandler = new DBHandler(HomeActivity.this);
 
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sp.edit();
+
+        cardReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, ReportActivity.class);
+                startActivity(intent);
+            }
+        });
 
         cardTokens.setOnClickListener(new View.OnClickListener() {
             @Override

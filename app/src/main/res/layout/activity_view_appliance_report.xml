@@ -12,7 +12,7 @@
 
 
         <EditText
-            android:id="@+id/etxt_search2"
+            android:id="@+id/etxt_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/neighbourhood_recyclerview"
+                android:id="@+id/product_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -76,7 +76,7 @@
 
         <ImageView
             android:padding="50dp"
-            android:id="@+id/image_no_token"
+            android:id="@+id/image_no_view_appliance"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginTop="50dp" />

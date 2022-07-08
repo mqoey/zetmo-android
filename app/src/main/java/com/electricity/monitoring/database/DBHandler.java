@@ -8,10 +8,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.model.Appliance;
+import com.electricity.monitoring.model.ApplianceTime;
 import com.electricity.monitoring.model.Tarrif;
 import com.electricity.monitoring.model.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -30,6 +35,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String DESCRIPTION_COL = "description";
     private static final String YEARS_COL = "years";
     private static final String CONSUMPTION_COL = "consumption";
+    private static final String DURATION_COL = "duration";
     private static final String IMAGE_COL = "image";
     private static final String APPLIANCE_ID = "appliance_id";
     private static final String DATE_COL = "date";
@@ -57,7 +63,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 + APPLIANCE_ID + " TEXT,"
                 + START_TIME_COL + " TEXT,"
                 + END_TIME_COL + " TEXT,"
-                + DATE_COL + " TEXT)";
+                + DATE_COL + " TEXT,"
+                + DURATION_COL + " TEXT,"
+                + CONSUMPTION_COL + " TEXT)";
 
         String query_2 = "CREATE TABLE " + Constant.TABLE_USERS + " ("
                 + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -121,12 +129,13 @@ public class DBHandler extends SQLiteOpenHelper {
         return applianceArrayList;
     }
 
+
     public ArrayList<Appliance> getAppliancesByID(String appliance_ID) {
 
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
 //        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_APPLIANCES + ID_COL + " =? " + appliance_ID, null);
-Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_APPLIANCES + " WHERE " + "id" + "=?", new String[]{appliance_ID});
+        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_APPLIANCES + " WHERE " + "id" + "=?", new String[]{appliance_ID});
         ArrayList<Appliance> applianceArrayList = new ArrayList<>();
 
         if (cursorAppliances.moveToFirst()) {
@@ -266,7 +275,7 @@ Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TA
         sqLiteDatabase.close();
     }
 
-    public void startApplianceTimer(String applianceID, String date, String startTime){
+    public void startApplianceTimer(String applianceID, String date, String startTime) {
 
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -274,22 +283,153 @@ Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TA
         contentValues.put(APPLIANCE_ID, applianceID);
         contentValues.put(START_TIME_COL, startTime);
         contentValues.put(END_TIME_COL, "pending");
+        contentValues.put(DURATION_COL, "pending");
+        contentValues.put(CONSUMPTION_COL, "pending");
         contentValues.put(DATE_COL, date);
 
         sqLiteDatabase.insert(Constant.TABLE_TIME_TRACKING, null, contentValues);
         sqLiteDatabase.close();
     }
 
-    public void stopApplianceTimer(String applianceID, String date, String endTime){
+    public void stopApplianceTimer(String applianceID, String date, String endTime) {
 
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT 1 FROM " + Constant.TABLE_TARRIFS + " WHERE " + APPLIANCE_ID + "=? AND " + DATE_COL + "=? AND " + END_TIME_COL + "=?", new String[]{applianceID, date, "pending"});
+        Date endTime1 = null, startTime = null;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        String start_time = cursor.getString(2);
+        String end_time = endTime;
+
+        try {
+            startTime = simpleDateFormat.parse(start_time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (end_time.equals("pending")) {
+                Calendar calendar = Calendar.getInstance();
+                String time = simpleDateFormat.format(calendar.getTime());
+                endTime1 = simpleDateFormat.parse(time);
+            }else {
+                endTime1 = simpleDateFormat.parse(end_time);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long difference = endTime1.getTime() - startTime.getTime();
+
+        if (difference < 0) {
+            Date dateMax = null;
+            try {
+                dateMax = simpleDateFormat.parse("24:00:00");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date dateMin = null;
+            try {
+                dateMin = simpleDateFormat.parse("00:00:00");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            difference = (dateMax.getTime() - startTime.getTime()) + (endTime1.getTime() - dateMin.getTime());
+        }
+        int hours = (int) (difference / (1000 * 60 * 60));
+        int min = (int) (difference - (1000 * 60 * 60 * hours)) / (1000 * 60);
+
+        String duration = hours + "hrs " + min + "mins";
+
+        ArrayList<Tarrif> tarrifArrayList = getTarrif();
+        String tarrif = tarrifArrayList.get(0).getPrice();
+
+        long consumption = difference * Long.parseLong(tarrif);
+
         contentValues.put(END_TIME_COL, endTime);
+        contentValues.put(DURATION_COL, duration);
+        contentValues.put(CONSUMPTION_COL, consumption);
 
         sqLiteDatabase.update(Constant.TABLE_TIME_TRACKING, contentValues, APPLIANCE_ID + "=? AND " + DATE_COL + "=? AND " + END_TIME_COL + "=?", new String[]{applianceID, date, "pending"});
         sqLiteDatabase.close();
 
+    }
+
+    public ArrayList<ApplianceTime> getApplianceDate(){
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT DISTINCT "+ DATE_COL +" FROM " + Constant.TABLE_TIME_TRACKING, null);
+
+        ArrayList<ApplianceTime> applianceArrayList = new ArrayList<>();
+
+        if (cursorAppliances.moveToFirst()) {
+            do {
+                applianceArrayList.add(new ApplianceTime(
+                        cursorAppliances.getString(0),
+                        cursorAppliances.getString(0),
+                        cursorAppliances.getString(0),
+                        cursorAppliances.getString(0),
+                        cursorAppliances.getString(0),
+                        cursorAppliances.getString(0)));
+            } while (cursorAppliances.moveToNext());
+        }
+        cursorAppliances.close();
+        return applianceArrayList;
+    }
+
+    public void updateApplianceTimer(String date) {
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(END_TIME_COL, "23:59:59");
+
+        sqLiteDatabase.update(Constant.TABLE_TIME_TRACKING, contentValues, DATE_COL + "=? AND " + END_TIME_COL + "=?", new String[]{date, "pending"});
+        sqLiteDatabase.close();
+    }
+
+    public void updatedApplianceTimer(String yesterday, String today) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_TIME_TRACKING + " WHERE " + DATE_COL + "=? AND " + END_TIME_COL + "=?", new String[]{yesterday, "pending"});
+
+        if (cursorAppliances.moveToFirst()) {
+            do {
+                contentValues.put(APPLIANCE_ID, cursorAppliances.getString(1));
+                contentValues.put(START_TIME_COL, "00:00:00");
+                contentValues.put(END_TIME_COL, "pending");
+                contentValues.put(DATE_COL, today);
+
+                sqLiteDatabase.insert(Constant.TABLE_TIME_TRACKING, null, contentValues);
+            } while (cursorAppliances.moveToNext());
+        }
+        cursorAppliances.close();
+    }
+
+
+    public ArrayList<ApplianceTime> getAppliancesByDate(String date) {
+
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_TIME_TRACKING+ " WHERE " + DATE_COL + "=?" , new String[]{date});
+
+        ArrayList<ApplianceTime> applianceTimeArrayList = new ArrayList<>();
+
+        if (cursorAppliances.moveToFirst()) {
+            do {
+                applianceTimeArrayList.add(new ApplianceTime(
+                        cursorAppliances.getString(1),
+                        cursorAppliances.getString(2),
+                        cursorAppliances.getString(3),
+                        cursorAppliances.getString(4),
+                        cursorAppliances.getString(5),
+                        cursorAppliances.getString(6)));
+            } while (cursorAppliances.moveToNext());
+        }
+        cursorAppliances.close();
+        return applianceTimeArrayList;
     }
 
     @Override

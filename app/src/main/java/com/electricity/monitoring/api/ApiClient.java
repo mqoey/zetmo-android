@@ -17,7 +17,6 @@ public class ApiClient {
 
     public static Retrofit getApiClient() {
 
-
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
                 .connectTimeout(10, TimeUnit.MINUTES)

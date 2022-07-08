@@ -22,6 +22,7 @@
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/drawable/roun_rect_white.xml" value="0.1" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_add_appliance.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_appliance.xml" value="0.19010416666666666" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_appliance_report.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_client_neighbourhood.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_edit_appliance.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_home.xml" value="0.33" />
@@ -34,8 +35,11 @@
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_tarrif.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_token.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_view_appliance.xml" value="0.25" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_view_appliance_report.xml" value="0.18854166666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_view_token.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/appliance_item.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/appliance_report_item.xml" value="0.25" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/appliancetime_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/content_home2.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/data_placeholder_layout.xml" value="0.19010416666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/fragment_gallery.xml" value="0.20416666666666666" />
@@ -44,6 +48,7 @@
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/neighbourhood_item.xml" value="0.2" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/notification_result.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/token_item.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/view_appliancetime_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/menu/activity_main_drawer.xml" value="0.1125" />
       </map>
     </option>

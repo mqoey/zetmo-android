@@ -65,7 +65,6 @@ public class TokenAdapter extends RecyclerView.Adapter<TokenAdapter.MyViewHolder
             txt_amount = itemView.findViewById(R.id.txt_amount);
             txt_power = itemView.findViewById(R.id.txt_power);
             txt_id = itemView.findViewById(R.id.txt_id);
-
             itemView.setOnClickListener(this);
         }
 
