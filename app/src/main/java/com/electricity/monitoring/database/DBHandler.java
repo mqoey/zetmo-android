@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
 
@@ -127,6 +128,26 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         cursorAppliances.close();
         return applianceArrayList;
+    }
+
+    public List<String> getAppliancesList() {
+
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_APPLIANCES, null);
+
+        List<String> applianceList = new ArrayList<>();
+
+        int length = cursor.getCount();
+        int j = 0;
+        for (int i = 0; i < length; i++) {
+            while (cursor.moveToNext()){
+                    String name = cursor.getString(1);
+                    applianceList.add(j, name);
+                    j++;
+            }
+        }
+        return applianceList;
     }
 
 
@@ -291,17 +312,20 @@ public class DBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    public void stopApplianceTimer(String applianceID, String date, String endTime) {
-
+    public void stopApplianceTimer(String applianceID, String date) {
+        String start_time = "";
+        String end_time = "";
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT 1 FROM " + Constant.TABLE_TARRIFS + " WHERE " + APPLIANCE_ID + "=? AND " + DATE_COL + "=? AND " + END_TIME_COL + "=?", new String[]{applianceID, date, "pending"});
-        Date endTime1 = null, startTime = null;
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_TIME_TRACKING + " WHERE " + APPLIANCE_ID + "=? AND " + DATE_COL + "=? AND " + END_TIME_COL + "=?", new String[]{applianceID, date, "pending"});
+        Date endTime = null, startTime = null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 
-        String start_time = cursor.getString(2);
-        String end_time = endTime;
+        if (cursor.moveToFirst()) {
+            start_time = cursor.getString(2);
+        }
+        cursor.close();
 
         try {
             startTime = simpleDateFormat.parse(start_time);
@@ -309,18 +333,15 @@ public class DBHandler extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         try {
-            if (end_time.equals("pending")) {
-                Calendar calendar = Calendar.getInstance();
-                String time = simpleDateFormat.format(calendar.getTime());
-                endTime1 = simpleDateFormat.parse(time);
-            }else {
-                endTime1 = simpleDateFormat.parse(end_time);
-            }
+            Calendar calendar = Calendar.getInstance();
+            end_time = simpleDateFormat.format(calendar.getTime());
+            endTime = simpleDateFormat.parse(end_time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        long difference = endTime1.getTime() - startTime.getTime();
+        long difference = endTime.getTime() - startTime.getTime();
+//        long difference = startTime.getTime();
 
         if (difference < 0) {
             Date dateMax = null;
@@ -335,31 +356,31 @@ public class DBHandler extends SQLiteOpenHelper {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            difference = (dateMax.getTime() - startTime.getTime()) + (endTime1.getTime() - dateMin.getTime());
+            difference = (dateMax.getTime() - startTime.getTime()) + (endTime.getTime() - dateMin.getTime());
         }
         int hours = (int) (difference / (1000 * 60 * 60));
         int min = (int) (difference - (1000 * 60 * 60 * hours)) / (1000 * 60);
 
         String duration = hours + "hrs " + min + "mins";
 
-        ArrayList<Tarrif> tarrifArrayList = getTarrif();
+        ArrayList<Tarrif> tarrifArrayList;
+        tarrifArrayList = getTarrif();
         String tarrif = tarrifArrayList.get(0).getPrice();
 
-        long consumption = difference * Long.parseLong(tarrif);
+        double consumption = (difference / (1000 * 60 * 60)) * Double.parseDouble(tarrif);
 
-        contentValues.put(END_TIME_COL, endTime);
+        contentValues.put(END_TIME_COL, end_time);
         contentValues.put(DURATION_COL, duration);
         contentValues.put(CONSUMPTION_COL, consumption);
 
         sqLiteDatabase.update(Constant.TABLE_TIME_TRACKING, contentValues, APPLIANCE_ID + "=? AND " + DATE_COL + "=? AND " + END_TIME_COL + "=?", new String[]{applianceID, date, "pending"});
         sqLiteDatabase.close();
-
     }
 
-    public ArrayList<ApplianceTime> getApplianceDate(){
+    public ArrayList<ApplianceTime> getApplianceDate() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
-        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT DISTINCT "+ DATE_COL +" FROM " + Constant.TABLE_TIME_TRACKING, null);
+        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT DISTINCT " + DATE_COL + " FROM " + Constant.TABLE_TIME_TRACKING, null);
 
         ArrayList<ApplianceTime> applianceArrayList = new ArrayList<>();
 
@@ -413,7 +434,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
-        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_TIME_TRACKING+ " WHERE " + DATE_COL + "=?" , new String[]{date});
+        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_TIME_TRACKING + " WHERE " + DATE_COL + "=?", new String[]{date});
 
         ArrayList<ApplianceTime> applianceTimeArrayList = new ArrayList<>();
 

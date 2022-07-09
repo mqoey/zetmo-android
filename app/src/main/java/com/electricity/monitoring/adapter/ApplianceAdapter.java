@@ -83,7 +83,7 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
                     sp.edit().putBoolean("isChecked" + applianceID, true).apply();
                 } else {
                     dbHandler = new DBHandler(context);
-                    dbHandler.stopApplianceTimer(applianceID, date, time);
+                    dbHandler.stopApplianceTimer(applianceID, date);
                     sp.edit().putBoolean("isChecked" + applianceID, false).apply();
                 }
             }

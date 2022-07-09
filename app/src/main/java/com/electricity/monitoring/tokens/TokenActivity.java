@@ -53,7 +53,7 @@ public class TokenActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.neighbourhood_recyclerview);
         etxtSearch = findViewById(R.id.etxt_search2);
-        imgNoToken = findViewById(R.id.image_no_product);
+        imgNoToken = findViewById(R.id.image_no_token);
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
@@ -68,8 +68,6 @@ public class TokenActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
         recyclerView.setHasFixedSize(true);
-
-
 
         dbHandler = new DBHandler(TokenActivity.this);
 
@@ -96,7 +94,7 @@ public class TokenActivity extends AppCompatActivity {
                     ArrayList<Token> tokenArrayList;
                     tokenArrayList = response.body();
 
-                    Toasty.success(TokenActivity.this, "Got data " + tokenArrayList.size(), Toast.LENGTH_SHORT).show();
+//                    Toasty.success(TokenActivity.this, "Got data " + tokenArrayList.size(), Toast.LENGTH_SHORT).show();
 
                     if (tokenArrayList.isEmpty()) {
                         recyclerView.setVisibility(View.GONE);

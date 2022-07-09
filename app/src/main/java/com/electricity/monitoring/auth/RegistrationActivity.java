@@ -114,7 +114,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 loading.dismiss();
                 if (response.code() == 200) {
-                    Toasty.success(RegistrationActivity.this, "Registered successfully " + response.body().getId(), Toast.LENGTH_SHORT).show();
+                    Toasty.success(RegistrationActivity.this, "Registered successfully ", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
 //                    Intent intent = new Intent(RegistrationActivity.this, HomeRegistrationActivity.class);
 //                    intent.putExtra("USERID", response.body().getId());

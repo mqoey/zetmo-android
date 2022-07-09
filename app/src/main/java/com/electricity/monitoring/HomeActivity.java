@@ -17,6 +17,7 @@ import com.electricity.monitoring.profile.ProfileActivity;
 import com.electricity.monitoring.report.ReportActivity;
 import com.electricity.monitoring.tarrif.TarrifActivity;
 import com.electricity.monitoring.tokens.TokenActivity;
+import com.electricity.monitoring.usage.UsageActivity;
 import com.electricity.monitoring.utils.BaseActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 
@@ -25,7 +26,7 @@ public class HomeActivity extends BaseActivity {
     //for double back press to exit
     private static final int TIME_DELAY = 2000;
     private static long backPressed;
-    CardView cardAppliances, cardProducts, cardProfile, cardTarrifs, cardTokens, cardReport, cardSettings, cardExpense, cardLogout;
+    CardView cardAppliances, cardUsage, cardProfile, cardTarrifs, cardTokens, cardReport, cardSettings, cardExpense, cardLogout;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     DBHandler dbHandler;
@@ -45,11 +46,20 @@ public class HomeActivity extends BaseActivity {
         cardTarrifs = findViewById(R.id.card_tarrifs);
         cardTokens = findViewById(R.id.card_tokens);
         cardReport = findViewById(R.id.card_reports);
+        cardUsage = findViewById(R.id.card_usage);
 
         dbHandler = new DBHandler(HomeActivity.this);
 
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sp.edit();
+
+        cardUsage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, UsageActivity.class);
+                startActivity(intent);
+            }
+        });
 
         cardReport.setOnClickListener(new View.OnClickListener() {
             @Override

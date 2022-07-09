@@ -17,6 +17,7 @@ import com.electricity.monitoring.R;
 import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.Appliance;
 import com.electricity.monitoring.model.ApplianceTime;
+import com.electricity.monitoring.model.Tarrif;
 import com.electricity.monitoring.utils.Utils;
 
 import java.io.File;
@@ -94,16 +95,22 @@ public class ViewReportAdapter extends RecyclerView.Adapter<ViewReportAdapter.My
         }
         int hours = (int) (difference / (1000 * 60 * 60));
         int min = (int) (difference - (1000 * 60 * 60 * hours)) / (1000 * 60);
+        DBHandler dbHandler = new DBHandler(context);
+
+        ArrayList<Tarrif> tarrifArrayList;
+        tarrifArrayList = dbHandler.getTarrif();
+        String tarrif = tarrifArrayList.get(0).getPrice();
 
         String duration = hours + "hrs " + min + "mins";
+        double consumption = (difference / (1000 * 60 * 60)) * Double.parseDouble(tarrif);
 
-        DBHandler dbHandler = new DBHandler(context);
         ArrayList<Appliance> appliance = dbHandler.getAppliancesByID(applianceID);
 
         String image = appliance.get(0).getApplianceImage();
 
         holder.txtName.setText(appliance.get(0).getApplianceName());
         holder.txtDuration.setText(duration);
+        holder.txt_consumption.setText(String.valueOf(consumption) + " KHz per hr");
 
         File imageUrl = new File(image);
 
@@ -127,7 +134,7 @@ public class ViewReportAdapter extends RecyclerView.Adapter<ViewReportAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView txtDuration, txtName;
+        TextView txtDuration, txtName, txt_consumption;
         ImageView applianceImage;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -135,6 +142,7 @@ public class ViewReportAdapter extends RecyclerView.Adapter<ViewReportAdapter.My
 
             txtDuration = itemView.findViewById(R.id.txt_duration);
             txtName = itemView.findViewById(R.id.txt_name);
+            txt_consumption = itemView.findViewById(R.id.txt_consumption);
             applianceImage = itemView.findViewById(R.id.report_image);
 
             itemView.setOnClickListener(this);
