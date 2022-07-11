@@ -22,54 +22,47 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".tokens.PurchasedTokensActivity"
+            android:exported="true" />
+        <activity
+            android:name=".tokens.PurchaseTokenActivity"
+            android:exported="true" />
+        <activity
             android:name=".usage.UsageActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".report.ViewReportActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".report.ReportActivity"
-            android:exported="false" />
-
-        <service android:name=".service.TimeService" />
-
+            android:exported="true" />
         <activity
             android:name=".tokens.ViewTokenActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".tokens.TokenActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".auth.ClientNeighbourhoodActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".tarrif.TarrifActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".profile.ProfileActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".auth.HomeRegistrationActivity"
-            android:exported="false" />
-
-        <service
-            android:name=".service.StartOnBoot"
-            android:enabled="true"
             android:exported="true" />
-        <service
-            android:name=".service.TimeTrackerService"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity
             android:name=".appliance.EditApplianceActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".utils.BaseActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".auth.LoginActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".HomeActivity"
             android:exported="true" />

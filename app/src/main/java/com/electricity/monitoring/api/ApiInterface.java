@@ -59,4 +59,10 @@ public interface ApiInterface {
     Call<Token> useToken(
             @Field("token_id") String token_id
     );
+
+    @FormUrlEncoded
+    @POST("purchasetoken")
+    Call<Token> purchasetoken(
+            @Field("client_id") String client_id,
+            @Field("amount_paid") String amount_paid);
 }

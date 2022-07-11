@@ -110,7 +110,7 @@ public class ViewReportAdapter extends RecyclerView.Adapter<ViewReportAdapter.My
 
         holder.txtName.setText(appliance.get(0).getApplianceName());
         holder.txtDuration.setText(duration);
-        holder.txt_consumption.setText(String.valueOf(consumption) + " KHz per hr");
+        holder.txt_consumption.setText(consumption + " KHz per hr");
 
         File imageUrl = new File(image);
 

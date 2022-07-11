@@ -8,7 +8,7 @@ public class Constant {
     }
 
     //For retrofit base url must end with /
-//    public static final String BASE_URL = "http://192.168.1.232/zetmo/api/";
+//    public static final String BASE_URL = "http://192.168.189.70/zetmo/api/";
 //    public static final String BASE_URL = "http://192.168.1.200/zetmo/api/";
     public static final String BASE_URL = "https://zetmo.fkultimate.co.zw/api/";
     //We will use this to store the user token number into shared preference

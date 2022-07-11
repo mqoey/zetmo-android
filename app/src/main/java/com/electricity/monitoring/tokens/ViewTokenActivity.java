@@ -75,6 +75,7 @@ public class ViewTokenActivity extends AppCompatActivity {
                         if (response.code() == 200){
                             Intent intent = new Intent(ViewTokenActivity.this, TokenActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                     }
 

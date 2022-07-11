@@ -83,6 +83,7 @@ public class ViewApplianceActivity extends AppCompatActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 dialogBuilder.dismiss();
+                                finish();
                             }
                         })
                         .setButton2Click(new View.OnClickListener() {

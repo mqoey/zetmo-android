@@ -10,7 +10,6 @@
         android:layout_height="fill_parent"
         android:orientation="vertical">
 
-
         <EditText
             android:id="@+id/etxt_search"
             android:layout_width="match_parent"

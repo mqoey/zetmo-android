@@ -1,86 +1,87 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
-
-        <EditText
-            android:id="@+id/etxt_search2"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/round_border"
-            android:drawableRight="@drawable/ic_search"
-            android:ems="10"
-            android:hint="@string/search_here"
-            android:inputType="textPersonName"
-            android:padding="10dp" />
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_view_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_margin="5dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="15dp"
-            android:orientation="vertical"
-            app:shimmer_duration="800"
-            tools:ignore="MissingConstraints">
+            android:gravity="center"
+            android:foreground="?android:attr/selectableItemBackground"
 
-            <!-- Adding 7 rows of placeholders -->
+            android:theme="@style/ThemeOverlay.AppCompat.Light"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp">
+
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:orientation="vertical">
 
-                <include layout="@layout/data_placeholder_layout" />
 
-                <include layout="@layout/data_placeholder_layout" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <include layout="@layout/data_placeholder_layout" />
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        style="@style/RippleStyleWhite"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                <include layout="@layout/data_placeholder_layout" />
+                        <Button
+                            android:id="@+id/btn_purchase"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/colorPrimary"
+                            android:padding="4dp"
+                            android:text="Purchase new Token"
+                            android:textColor="#fff"
+                            android:textStyle="bold" />
 
-                <include layout="@layout/data_placeholder_layout" />
+                    </com.balysv.materialripple.MaterialRippleLayout>
 
-                <include layout="@layout/data_placeholder_layout" />
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        style="@style/RippleStyleWhite"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                <include layout="@layout/data_placeholder_layout" />
+                        <Button
+                            android:id="@+id/btn_purchased"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/red"
+                            android:padding="4dp"
+                            android:text="Purchased Token"
+                            android:textColor="#fff"
+                            android:textStyle="bold" />
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+                </LinearLayout>
             </LinearLayout>
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeToRefresh"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/neighbourhood_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="?android:attr/selectableItemBackground">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <ImageView
-            android:padding="50dp"
-            android:id="@+id/image_no_token"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="50dp" />
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

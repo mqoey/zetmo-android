@@ -1,129 +1,60 @@
 package com.electricity.monitoring.tokens;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.adapter.NeighbourhoodAdapter;
 import com.electricity.monitoring.adapter.TokenAdapter;
-import com.electricity.monitoring.api.ApiClient;
-import com.electricity.monitoring.api.ApiInterface;
-import com.electricity.monitoring.auth.HomeRegistrationActivity;
 import com.electricity.monitoring.database.DBHandler;
-import com.electricity.monitoring.model.Neighbourhood;
-import com.electricity.monitoring.model.Token;
 import com.electricity.monitoring.utils.Utils;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
-import java.util.ArrayList;
-
-import es.dmoral.toasty.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class TokenActivity extends AppCompatActivity {
 
-    SharedPreferences sp;
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    EditText etxtSearch;
-    ProgressDialog loading;
-    private RecyclerView recyclerView;
-    TokenAdapter tokenAdapter;
-    private ShimmerFrameLayout mShimmerViewContainer;
-    Utils utils;
-    DBHandler dbHandler;
-    ImageView imgNoToken;
+    Button btnPurchase, btnPurchased;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_token);
 
-        recyclerView = findViewById(R.id.neighbourhood_recyclerview);
-        etxtSearch = findViewById(R.id.etxt_search2);
-        imgNoToken = findViewById(R.id.image_no_token);
-
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_gradient));
-        getSupportActionBar().setTitle("Purchased Tokens");
+        getSupportActionBar().setTitle("Tokens");
 
-        mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
-        mSwipeRefreshLayout = findViewById(R.id.swipeToRefresh);
-        //set color of swipe refresh
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        btnPurchase = findViewById(R.id.btn_purchase);
+        btnPurchased = findViewById(R.id.btn_purchased);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
-        recyclerView.setHasFixedSize(true);
-
-        dbHandler = new DBHandler(TokenActivity.this);
-
-        String email = dbHandler.loggedInUser();
-        tokens(email);
-    }
-
-
-
-    public void tokens(String email){
-
-        loading = new ProgressDialog(this);
-        loading.setCancelable(false);
-        loading.setMessage(getString(R.string.please_wait));
-        loading.show();
-
-        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<ArrayList<Token>> call = apiInterface.getTokens(email);
-        call.enqueue(new Callback<ArrayList<Token>>() {
+        btnPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<ArrayList<Token>> call, Response<ArrayList<Token>> response) {
-                loading.dismiss();
-                if (response.isSuccessful()) {
-                    ArrayList<Token> tokenArrayList;
-                    tokenArrayList = response.body();
-
-//                    Toasty.success(TokenActivity.this, "Got data " + tokenArrayList.size(), Toast.LENGTH_SHORT).show();
-
-                    if (tokenArrayList.isEmpty()) {
-                        recyclerView.setVisibility(View.GONE);
-                        mShimmerViewContainer.stopShimmer();
-                        mShimmerViewContainer.setVisibility(View.GONE);
-
-                    } else {
-                        mShimmerViewContainer.stopShimmer();
-                        mShimmerViewContainer.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        tokenAdapter = new TokenAdapter(tokenArrayList, TokenActivity.this);
-                        recyclerView.setAdapter(tokenAdapter);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Token>> call, Throwable t) {
-                loading.dismiss();
-                recyclerView.setVisibility(View.GONE);
-                imgNoToken.setVisibility(View.VISIBLE);
-                imgNoToken.setImageResource(R.drawable.not_found);
-                mShimmerViewContainer.stopShimmer();
-                mShimmerViewContainer.setVisibility(View.GONE);
-                Toasty.info(TokenActivity.this, "No Tokens found!!", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                Intent intent = new Intent(TokenActivity.this, PurchaseTokenActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
+        btnPurchased.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TokenActivity.this, PurchasedTokensActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
     //for back button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

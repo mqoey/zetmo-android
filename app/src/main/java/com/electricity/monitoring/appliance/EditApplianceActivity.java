@@ -106,12 +106,13 @@ public class EditApplianceActivity extends AppCompatActivity {
         String image = applianceData.get(0).getApplianceImage();
 
         Integer status = dbHandler.updateAppliance(appliance_id, name, description, condition, years, consumption, image);
-        System.out.println("status ---------------------- " + status);
+
         if (status > 0){
         Toasty.success(EditApplianceActivity.this, "Edited successfully", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(EditApplianceActivity.this, ApplianceActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+            finish();
         }
         else {
             Toasty.error(EditApplianceActivity.this, "Failed updating", Toast.LENGTH_SHORT).show();

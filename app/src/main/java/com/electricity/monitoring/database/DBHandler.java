@@ -141,21 +141,18 @@ public class DBHandler extends SQLiteOpenHelper {
         int length = cursor.getCount();
         int j = 0;
         for (int i = 0; i < length; i++) {
-            while (cursor.moveToNext()){
-                    String name = cursor.getString(1);
-                    applianceList.add(j, name);
-                    j++;
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(1);
+                applianceList.add(j, name);
+                j++;
             }
         }
         return applianceList;
     }
 
-
     public ArrayList<Appliance> getAppliancesByID(String appliance_ID) {
 
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-
-//        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_APPLIANCES + ID_COL + " =? " + appliance_ID, null);
         Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_APPLIANCES + " WHERE " + "id" + "=?", new String[]{appliance_ID});
         ArrayList<Appliance> applianceArrayList = new ArrayList<>();
 
@@ -244,16 +241,14 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public ArrayList<User> getUser() {
-
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-
         Cursor cursorUser = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_USERS, null);
-
         ArrayList<User> userArrayList = new ArrayList<>();
 
         if (cursorUser.moveToFirst()) {
             userArrayList.add(new User(
                     cursorUser.getString(0),
+                    cursorUser.getString(1),
                     cursorUser.getString(2),
                     cursorUser.getString(2),
                     cursorUser.getString(2),
@@ -269,9 +264,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public ArrayList<Tarrif> getTarrif() {
 
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-
         Cursor cursorTarrif = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_TARRIFS, null);
-
         ArrayList<Tarrif> tarrifArrayList = new ArrayList<>();
 
         if (cursorTarrif.moveToFirst()) {

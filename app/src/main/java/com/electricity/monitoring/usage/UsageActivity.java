@@ -33,7 +33,7 @@ public class UsageActivity extends AppCompatActivity implements AdapterView.OnIt
 
         List<String> applianceArrayList = dbHandler.getAppliancesList();
 
-        Spinner spin = (Spinner) findViewById(R.id.spinner);
+        Spinner spin = findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, applianceArrayList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(adapter);

@@ -25,17 +25,19 @@
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_appliance_report.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_client_neighbourhood.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_edit_appliance.xml" value="0.20416666666666666" />
-        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_home.xml" value="0.33" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_home.xml" value="0.2" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_home2.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_home_registration.xml" value="0.2" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_login.xml" value="0.18854166666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_profile.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_purchase_token.xml" value="0.25" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_purchased_tokens.xml" value="0.19010416666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_registration.xml" value="0.25" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_splash.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_tarrif.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_token.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_usage.xml" value="0.20416666666666666" />
-        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_view_appliance.xml" value="0.25" />
+        <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_view_appliance.xml" value="0.2" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_view_appliance_report.xml" value="0.18854166666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/activity_view_token.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/layout/appliance_item.xml" value="0.20416666666666666" />

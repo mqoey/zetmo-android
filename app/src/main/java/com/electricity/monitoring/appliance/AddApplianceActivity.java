@@ -77,6 +77,7 @@ public class AddApplianceActivity extends BaseActivity {
                     Intent intent = new Intent(AddApplianceActivity.this, ApplianceActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
+                    finish();
                 }
             }
         });

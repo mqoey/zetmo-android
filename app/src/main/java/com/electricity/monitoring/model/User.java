@@ -6,6 +6,9 @@ public class User {
     @SerializedName("id")
     private String id;
 
+    @SerializedName("userID")
+    private String userID;
+
     @SerializedName("name")
     private String name;
 
@@ -27,8 +30,9 @@ public class User {
     @SerializedName("password")
     private String password;
 
-    public User(String id, String name, String first_name, String last_name, String email, String address, String meter_number, String password) {
+    public User(String id, String userID, String name, String first_name, String last_name, String email, String address, String meter_number, String password) {
         this.id = id;
+        this.userID = userID;
         this.name = name;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -44,6 +48,14 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getName() {
