@@ -90,9 +90,8 @@ public class ViewTokenActivity extends AppCompatActivity {
                             } else {
                                 Intent intent = new Intent(ViewTokenActivity.this, PurchasedTokensActivity.class);
                                 DBHandler dbHandler = new DBHandler(ViewTokenActivity.this);
-                                Toasty.error(ViewTokenActivity.this, dbHandler.checkThreshold(), Toasty.LENGTH_LONG);
-                                String currentThreshold = dbHandler.checkThreshold();
-                                System.out.println("treshold : " + currentThreshold);
+                                String threshold = response.body().get(0).getPower_bought();
+                                dbHandler.addThreshold(threshold);
                                 startActivity(intent);
                                 finish();
                             }

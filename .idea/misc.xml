@@ -7,9 +7,14 @@
         <entry key="..\:/Programming/Zetmo/android/app/src/main/res/drawable/ic_bg_topheader.xml" value="0.1945" />
         <entry key="..\:/Programming/Zetmo/android/app/src/main/res/drawable/ic_email.xml" value="0.1945" />
         <entry key="..\:/Programming/Zetmo/android/app/src/main/res/drawable/rounded_button.xml" value="0.1945" />
-        <entry key="..\:/Programming/Zetmo/android/app/src/main/res/layout/activity_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android/app/src/main/res/layout/activity_calculate_threshold.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android/app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="..\:/Programming/Zetmo/android/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android/app/src/main/res/layout/activity_splash.xml" value="0.5" />
+        <entry key="..\:/Programming/Zetmo/android/app/src/main/res/layout/activity_tarrif.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android/app/src/main/res/layout/activity_threshold.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android/app/src/main/res/layout/activity_view_token.xml" value="0.20416666666666666" />
+        <entry key="..\:/Programming/Zetmo/android/app/src/main/res/layout/activity_view_usage.xml" value="0.20416666666666666" />
         <entry key="..\:/Programming/Zetmo/android/app/src/main/res/layout/notification.xml" value="0.18432971014492755" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1945" />
         <entry key="..\:/Programming/Zetmo/android_old/app/src/main/res/drawable/actionbar_gradient.xml" value="0.1945" />
