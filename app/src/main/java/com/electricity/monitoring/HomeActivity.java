@@ -1,14 +1,18 @@
 package com.electricity.monitoring;
 
+import static android.content.ContentValues.TAG;
 import static com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype.Slidetop;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.electricity.monitoring.appliance.ApplianceActivity;
 import com.electricity.monitoring.auth.LoginActivity;
@@ -20,6 +24,9 @@ import com.electricity.monitoring.tokens.TokenActivity;
 import com.electricity.monitoring.usage.UsageActivity;
 import com.electricity.monitoring.utils.BaseActivity;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class HomeActivity extends BaseActivity {
 

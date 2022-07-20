@@ -16,7 +16,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 
 public interface ApiInterface {
     //for login
@@ -34,10 +33,16 @@ public interface ApiInterface {
             @Field(Constant.KEY_ADDRESS) String address,
             @Field(Constant.KEY_METER_NUMBER) String meter_number,
             @Field(Constant.KEY_FIRST_NAME) String first_name,
-            @Field(Constant.KEY_LAST_NAME) String last_name);
+            @Field(Constant.KEY_LAST_NAME) String last_name,
+            @Field(Constant.KEY_FCM_TOKEN) String fcm_token);
 
     @GET("neighbourhoods")
     Call<ArrayList<Neighbourhood>> getNeighbourhoods();
+
+    @GET("clientneighbourhood")
+    Call<ArrayList<Neighbourhood>> getClientNeighbourhood(
+            @Query("client_id") String client_id
+    );
 
     @GET("tarrif")
     Call<Tarrif> getTarrif();
@@ -55,8 +60,8 @@ public interface ApiInterface {
     );
 
     @FormUrlEncoded
-    @POST
-    Call<Token> useToken(
+    @POST("useToken")
+    Call<ArrayList<Token>> useToken(
             @Field("token_id") String token_id
     );
 

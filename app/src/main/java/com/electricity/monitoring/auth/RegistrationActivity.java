@@ -1,20 +1,28 @@
 package com.electricity.monitoring.auth;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.electricity.monitoring.HomeActivity;
 import com.electricity.monitoring.R;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
 import com.electricity.monitoring.model.User;
 import com.electricity.monitoring.utils.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -27,11 +35,31 @@ public class RegistrationActivity extends AppCompatActivity {
     TextView txtLogin, txtRegister;
     Utils utils;
     ProgressDialog loading;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        token = task.getResult();
+
+                        // Log and toast
+                        String msg = "Token ----------------" + token;
+                        System.out.println("token -------------" + token);
+                        Log.d(TAG, msg);
+                    }
+                });
 
         getSupportActionBar().hide();
 
@@ -91,7 +119,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     etxt_ConfirmPassword.requestFocus();
                 } else {
                     if (utils.isNetworkAvailable(RegistrationActivity.this)) {
-                        register(email1, password1, address1, meter_number1, first_name1, last_name1);
+                        Toast.makeText(RegistrationActivity.this, token, Toast.LENGTH_SHORT).show();
+                        register(email1, password1, address1, meter_number1, first_name1, last_name1, token);
                     } else {
                         Toasty.error(RegistrationActivity.this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
                     }
@@ -101,14 +130,14 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     //registration method
-    private void register(String email, String password, String address, String meter_number, String first_name, String last_name) {
+    private void register(String email, String password, String address, String meter_number, String first_name, String last_name, String firebase_token) {
         loading = new ProgressDialog(this);
         loading.setCancelable(false);
         loading.setMessage(getString(R.string.please_wait));
         loading.show();
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<User> call = apiInterface.register(email, password, address, meter_number, first_name, last_name);
+        Call<User> call = apiInterface.register(email, password, address, meter_number, first_name, last_name, firebase_token);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -116,9 +145,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     Toasty.success(RegistrationActivity.this, "Registered successfully ", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-//                    Intent intent = new Intent(RegistrationActivity.this, HomeRegistrationActivity.class);
-//                    intent.putExtra("USERID", response.body().getId());
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {
                     Toasty.error(RegistrationActivity.this, "Email or meter number already registered", Toast.LENGTH_SHORT).show();

@@ -50,5 +50,6 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="tarrif">Tarrif</string>
+    <string name="msg_token_fmt">token</string>
 
 </resources>

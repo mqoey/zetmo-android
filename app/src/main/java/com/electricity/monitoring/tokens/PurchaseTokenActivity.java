@@ -100,7 +100,6 @@ public class PurchaseTokenActivity extends AppCompatActivity implements AdapterV
                                         public void onResponse(Call<Token> call, Response<Token> response) {
                                             loading.dismiss();
                                             if (response.code() == 200) {
-
                                                 Toasty.success(PurchaseTokenActivity.this,"Purchased successfully", Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(getApplicationContext(), PurchasedTokensActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

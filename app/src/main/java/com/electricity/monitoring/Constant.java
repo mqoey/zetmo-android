@@ -9,8 +9,9 @@ public class Constant {
 
     //For retrofit base url must end with /
 //    public static final String BASE_URL = "http://192.168.189.70/zetmo/api/";
-//    public static final String BASE_URL = "http://192.168.1.200/zetmo/api/";
-    public static final String BASE_URL = "https://zetmo.fkultimate.co.zw/api/";
+    public static final String BASE_URL = "http://192.168.1.200/zetmo/api/";
+//    public static final String BASE_URL = "https://zetmo.fkultimate.co.zw/api/";
+//    public static final String BASE_URL = "http://192.168.1.232/zetmo/api/";
     //We will use this to store the user token number into shared preference
     public static final String SHARED_PREF_NAME = "com.electricity.monitoring";
 
@@ -34,6 +35,7 @@ public class Constant {
     public static final String KEY_METER_NUMBER= "meter_number";
     public static final String KEY_FIRST_NAME= "first_name";
     public static final String KEY_LAST_NAME= "last_name";
+    public static final String KEY_FCM_TOKEN= "fcm_token";
 
     public static final String NEIGHBOURHOOD_ID = "neighbourhood_id";
     public static final String NEIGHBOURHOOD_NAME = "neighbourhood_name";
@@ -45,6 +47,8 @@ public class Constant {
     public static final String TABLE_TIME_TRACKING = "time_tracking";
     public static final String TABLE_USERS = "users";
     public static final String TABLE_TARRIFS = "tarrifs";
+    public static final String TABLE_NEIGHBOURHOODS = "neighbourhoods";
+    public static final String TABLE_THRESHOLDS = "thresholds";
 
 }
 

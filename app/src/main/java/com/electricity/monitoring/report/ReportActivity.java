@@ -82,7 +82,6 @@ public class ReportActivity extends AppCompatActivity {
             recyclerView.setAdapter(reportAdapter);
         }
 
-
         etxtSearch.addTextChangedListener(new TextWatcher() {
 
             @Override

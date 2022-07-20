@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.model.Appliance;
 import com.electricity.monitoring.model.ApplianceTime;
+import com.electricity.monitoring.model.Neighbourhood;
 import com.electricity.monitoring.model.Tarrif;
 import com.electricity.monitoring.model.User;
 
@@ -43,6 +44,11 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String START_TIME_COL = "start_time";
     private static final String END_TIME_COL = "end_time";
     private static final String PRICE_COL = "price";
+    private static final String NEIGHBOURHOOD_COL = "neighbourhood";
+    private static final String AREA_COL = "area";
+    private static final String MUNICIPALITY_COL = "municipality";
+    private static final String ENERGY_COL = "energy";
+    private static final String FCM_TOKEN_COL = "fcm_token";
 
     public DBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -76,6 +82,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 + ADDRESS_COL + " TEXT,"
                 + PASSWORD_COL + " TEXT,"
                 + METER_NUMBER_COL + " TEXT,"
+                + FCM_TOKEN_COL + " TEXT,"
                 + STATUS_COL + " TEXT)";
 
         String query_3 = "CREATE TABLE " + Constant.TABLE_TARRIFS + " ("
@@ -84,10 +91,24 @@ public class DBHandler extends SQLiteOpenHelper {
                 + PRICE_COL + " TEXT,"
                 + DATE_COL + " TEXT)";
 
+        String query_4 = "CREATE TABLE " + Constant.TABLE_NEIGHBOURHOODS + " ("
+                + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + NEIGHBOURHOOD_COL + " TEXT,"
+                + AREA_COL + " TEXT,"
+                + MUNICIPALITY_COL + " TEXT,"
+                + STATUS_COL + " TEXT)";
+
+        String query_5 = "CREATE TABLE " + Constant.TABLE_THRESHOLDS + " ("
+                + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ENERGY_COL + " TEXT,"
+                + STATUS_COL + " TEXT)";
+
         sqLiteDatabase.execSQL(query);
         sqLiteDatabase.execSQL(query_1);
         sqLiteDatabase.execSQL(query_2);
         sqLiteDatabase.execSQL(query_3);
+        sqLiteDatabase.execSQL(query_4);
+        sqLiteDatabase.execSQL(query_5);
     }
 
     public void addAppliance(String applianceName, String applianceDescription, String applianceCondition, String applianceYears, String applianceConsumption, String applianceImage) {
@@ -196,7 +217,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return status;
     }
 
-    public void loginUser(String userID, String name, String email, String password, String address, String meternumber) {
+    public void loginUser(String userID, String name, String email, String password, String address, String meternumber, String fcm_token) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -206,6 +227,7 @@ public class DBHandler extends SQLiteOpenHelper {
         contentValues.put(PASSWORD_COL, password);
         contentValues.put(ADDRESS_COL, address);
         contentValues.put(METER_NUMBER_COL, meternumber);
+        contentValues.put(FCM_TOKEN_COL, fcm_token);
         contentValues.put(STATUS_COL, "1");
 
         sqLiteDatabase.insert(Constant.TABLE_USERS, null, contentValues);
@@ -219,13 +241,25 @@ public class DBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    public String loggedInUser() {
+    public String loggedInUserEmail() {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         String user = "";
 
         Cursor cursorUser = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_USERS + " WHERE " + STATUS_COL + "=?", new String[]{"1"});
         if (cursorUser.moveToFirst()) {
             user = cursorUser.getString(3);
+        }
+        cursorUser.close();
+        return user;
+    }
+
+    public String loggedInUserID() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        String user = "";
+
+        Cursor cursorUser = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_USERS + " WHERE " + STATUS_COL + "=?", new String[]{"1"});
+        if (cursorUser.moveToFirst()) {
+            user = cursorUser.getString(1);
         }
         cursorUser.close();
         return user;
@@ -238,6 +272,44 @@ public class DBHandler extends SQLiteOpenHelper {
         boolean exist = cursor.moveToFirst();
         cursor.close();
         return exist;
+    }
+
+    public boolean checkNeighbourhood() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT 1 FROM " + Constant.TABLE_NEIGHBOURHOODS + " WHERE " + STATUS_COL + "=?", new String[]{"1"});
+        boolean exist = cursor.moveToFirst();
+        cursor.close();
+        return exist;
+    }
+
+    public ArrayList<Neighbourhood> getNeighbourhood() {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursorUser = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_NEIGHBOURHOODS, null);
+        ArrayList<Neighbourhood> userArrayList = new ArrayList<>();
+
+        if (cursorUser.moveToFirst()) {
+            userArrayList.add(new Neighbourhood(
+                    cursorUser.getString(0),
+                    cursorUser.getString(2),
+                    cursorUser.getString(1),
+                    cursorUser.getString(3)));
+        }
+        cursorUser.close();
+        return userArrayList;
+    }
+
+    public void choseNeighbourhood(String neighbourhood, String area, String municipality) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(NEIGHBOURHOOD_COL, neighbourhood);
+        contentValues.put(AREA_COL, area);
+        contentValues.put(MUNICIPALITY_COL, municipality);
+        contentValues.put(STATUS_COL, "1");
+
+        sqLiteDatabase.insert(Constant.TABLE_NEIGHBOURHOODS, null, contentValues);
+        sqLiteDatabase.close();
     }
 
     public ArrayList<User> getUser() {
@@ -255,6 +327,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     cursorUser.getString(3),
                     cursorUser.getString(4),
                     cursorUser.getString(6),
+                    cursorUser.getString(5),
                     cursorUser.getString(5)));
         }
         cursorUser.close();
@@ -422,7 +495,6 @@ public class DBHandler extends SQLiteOpenHelper {
         cursorAppliances.close();
     }
 
-
     public ArrayList<ApplianceTime> getAppliancesByDate(String date) {
 
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
@@ -444,6 +516,41 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         cursorAppliances.close();
         return applianceTimeArrayList;
+    }
+
+    public void addThreshold(String energy) {
+        String new_energy = "";
+        long newThreshold = 0, oldThreshold = 0;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        newThreshold = Long.parseLong(energy);
+        oldThreshold = Long.parseLong(checkThreshold());
+
+        new_energy = String.valueOf(newThreshold + oldThreshold);
+
+        contentValues.put(ENERGY_COL, new_energy);
+        contentValues.put(STATUS_COL, "1");
+
+        sqLiteDatabase.execSQL("delete from " + Constant.TABLE_THRESHOLDS);
+        sqLiteDatabase.insert(Constant.TABLE_THRESHOLDS, null, contentValues);
+        sqLiteDatabase.close();
+    }
+
+    public String checkThreshold() {
+        String threshold ="";
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_THRESHOLDS + " WHERE " + STATUS_COL + "=?", new String[]{"1"});
+        if (cursor.moveToFirst()) {
+            threshold = cursor.getString(1);
+        }
+        else {
+            addThreshold("0");
+//            threshold = "no threshold";
+        }
+        cursor.close();
+        return threshold;
     }
 
     @Override

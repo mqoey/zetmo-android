@@ -67,7 +67,7 @@ public class PurchasedTokensActivity extends AppCompatActivity {
 
         dbHandler = new DBHandler(PurchasedTokensActivity.this);
 
-        String email = dbHandler.loggedInUser();
+        String email = dbHandler.loggedInUserEmail();
         tokens(email);
     }
 

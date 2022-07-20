@@ -36,7 +36,6 @@ TarrifActivity tarrifActivity;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-
             ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
             Call<Tarrif> call = apiInterface.getTarrif();
             call.enqueue(new Callback<Tarrif>() {
@@ -68,6 +67,12 @@ TarrifActivity tarrifActivity;
 //        dbHandler.updateifApplianceTimer(yesterday);
         dbHandler.updatedApplianceTimer(yesterday, today);
         dbHandler.updateApplianceTimer(yesterday);
+
+//        if (dbHandler.checkThreshold().equals("no threshold")){
+//            dbHandler.addThreshold("0");
+//        }
+
+        dbHandler.checkThreshold();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();

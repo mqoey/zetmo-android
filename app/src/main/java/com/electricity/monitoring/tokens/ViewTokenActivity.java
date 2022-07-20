@@ -12,10 +12,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.electricity.monitoring.HomeActivity;
 import com.electricity.monitoring.R;
+import com.electricity.monitoring.adapter.TokenAdapter;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
+import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.Token;
 
+import java.util.ArrayList;
+
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,6 +63,7 @@ public class ViewTokenActivity extends AppCompatActivity {
         address.setText("Address : " + txt_address);
         meter_number.setText("Meter Number : " + txt_meter_number);
 
+
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,23 +73,57 @@ public class ViewTokenActivity extends AppCompatActivity {
                 loading.show();
 
                 ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-                Call<Token> call = apiInterface.useToken(txt_id);
-                call.enqueue(new Callback<Token>() {
+                Call<ArrayList<Token>> call = apiInterface.useToken(txt_id);
+                call.enqueue(new Callback<ArrayList<Token>>() {
                     @Override
-                    public void onResponse(Call<Token> call, Response<Token> response) {
+                    public void onResponse(Call<ArrayList<Token>> call, Response<ArrayList<Token>> response) {
                         loading.dismiss();
-                        if (response.code() == 200){
-                            Intent intent = new Intent(ViewTokenActivity.this, TokenActivity.class);
-                            startActivity(intent);
-                            finish();
+                        if (response.isSuccessful()) {
+                            ArrayList<Token> tokenArrayList;
+                            tokenArrayList = response.body();
+
+                            if (tokenArrayList.isEmpty()) {
+                                Toasty.error(ViewTokenActivity.this, "Something went wrong !!", Toasty.LENGTH_LONG);
+                                Intent intent = new Intent(ViewTokenActivity.this, TokenActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Intent intent = new Intent(ViewTokenActivity.this, PurchasedTokensActivity.class);
+                                DBHandler dbHandler = new DBHandler(ViewTokenActivity.this);
+                                Toasty.error(ViewTokenActivity.this, dbHandler.checkThreshold(), Toasty.LENGTH_LONG);
+                                String currentThreshold = dbHandler.checkThreshold();
+                                System.out.println("treshold : " + currentThreshold);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<Token> call, Throwable t) {
-                        loading.dismiss();
+                    public void onFailure(Call<ArrayList<Token>> call, Throwable t) {
+
                     }
                 });
+//                call.enqueue(new Callback<Token>() {
+//                    @Override
+//                    public void onResponse(Call<Token> call, Response<Token> response) {
+//                        loading.dismiss();
+//
+//                        Toasty.info(ViewTokenActivity.this, "code : " +response.code(), Toasty.LENGTH_LONG).show();
+//                        if (response.code() == 200){
+//                            Intent intent = new Intent(ViewTokenActivity.this, TokenActivity.class);
+//                            DBHandler dbHandler = new DBHandler(ViewTokenActivity.this);
+//                            dbHandler.checkThreshold();
+//                            startActivity(intent);
+//                            finish();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<Token> call, Throwable t) {
+//                        loading.dismiss();
+//                    }
+//                });
             }
         });
     }

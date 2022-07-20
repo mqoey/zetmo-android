@@ -30,7 +30,10 @@ public class User {
     @SerializedName("password")
     private String password;
 
-    public User(String id, String userID, String name, String first_name, String last_name, String email, String address, String meter_number, String password) {
+    @SerializedName("fcm_token")
+    private String fcm_token;
+
+    public User(String id, String userID, String name, String first_name, String last_name, String email, String address, String meter_number, String password, String fcm_token) {
         this.id = id;
         this.userID = userID;
         this.name = name;
@@ -40,6 +43,7 @@ public class User {
         this.address = address;
         this.meter_number = meter_number;
         this.password = password;
+        this.fcm_token = fcm_token;
     }
 
     public String getId() {
@@ -112,5 +116,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFcm_token() {
+        return fcm_token;
+    }
+
+    public void setFcm_token(String fcm_token) {
+        this.fcm_token = fcm_token;
     }
 }

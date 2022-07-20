@@ -10,6 +10,7 @@
         android:layout_height="fill_parent"
         android:orientation="vertical">
 
+
         <EditText
             android:id="@+id/etxt_search"
             android:layout_width="match_parent"
@@ -75,12 +76,11 @@
 
         <ImageView
             android:padding="50dp"
-            android:id="@+id/image_no_product"
+            android:id="@+id/image_no_view_appliance"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginTop="50dp" />
 
     </LinearLayout>
-
 
 </RelativeLayout>

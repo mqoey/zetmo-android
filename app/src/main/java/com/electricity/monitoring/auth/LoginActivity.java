@@ -114,8 +114,9 @@ public class LoginActivity extends BaseActivity {
                     String password = response.body().getPassword();
                     String address = response.body().getAddress();
                     String meterNumber = response.body().getMeter_number();
+                    String fcm_token = response.body().getFcm_token();
 
-                    dbHandler.loginUser(userID, name, email, password, address, meterNumber);
+                    dbHandler.loginUser(userID, name, email, password, address, meterNumber, fcm_token);
 
                     Toasty.success(LoginActivity.this, "Login successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);

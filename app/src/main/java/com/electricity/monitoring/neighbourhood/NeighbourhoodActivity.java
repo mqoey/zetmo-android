@@ -1,4 +1,4 @@
-package com.electricity.monitoring.auth;
+package com.electricity.monitoring.neighbourhood;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import com.electricity.monitoring.R;
 import com.electricity.monitoring.adapter.NeighbourhoodAdapter;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
+import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.Neighbourhood;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
@@ -25,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeRegistrationActivity extends AppCompatActivity {
+public class NeighbourhoodActivity extends AppCompatActivity {
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     EditText etxtSearch;
@@ -34,6 +35,7 @@ public class HomeRegistrationActivity extends AppCompatActivity {
     private NeighbourhoodAdapter neighbourhoodAdapter;
     private ShimmerFrameLayout mShimmerViewContainer;
     public String userID;
+    DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,11 @@ public class HomeRegistrationActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.neighbourhood_recyclerview);
         etxtSearch = findViewById(R.id.etxt_search2);
 
-        userID = getIntent().getExtras().getString("USERID");
+//        dbHandler = new DBHandler(NeighbourhoodActivity.this);
+//
+//        userID = dbHandler.loggedInUserID();
+//
+//getUserID();
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
@@ -80,7 +86,7 @@ public class HomeRegistrationActivity extends AppCompatActivity {
                     ArrayList<Neighbourhood> neighbourhoodArrayList;
                     neighbourhoodArrayList = response.body();
 
-                    Toasty.success(HomeRegistrationActivity.this, "Got data " + neighbourhoodArrayList.size(), Toast.LENGTH_SHORT).show();
+//                    Toasty.success(NeighbourhoodActivity.this, "Got data " + neighbourhoodArrayList.size(), Toast.LENGTH_SHORT).show();
 
                     if (neighbourhoodArrayList.isEmpty()) {
 
@@ -88,6 +94,7 @@ public class HomeRegistrationActivity extends AppCompatActivity {
                         //Stopping Shimmer Effects
                         mShimmerViewContainer.stopShimmer();
                         mShimmerViewContainer.setVisibility(View.GONE);
+                        Toasty.info(NeighbourhoodActivity.this, "No Neighbourhoods", Toast.LENGTH_SHORT).show();
 
                     } else {
                         //Stopping Shimmer Effects
@@ -95,7 +102,7 @@ public class HomeRegistrationActivity extends AppCompatActivity {
                         mShimmerViewContainer.setVisibility(View.GONE);
 
                         recyclerView.setVisibility(View.VISIBLE);
-                        neighbourhoodAdapter = new NeighbourhoodAdapter(neighbourhoodArrayList, HomeRegistrationActivity.this);
+                        neighbourhoodAdapter = new NeighbourhoodAdapter(neighbourhoodArrayList, NeighbourhoodActivity.this);
                         recyclerView.setAdapter(neighbourhoodAdapter);
                     }
                 }
@@ -104,7 +111,7 @@ public class HomeRegistrationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ArrayList<Neighbourhood>> call, Throwable t) {
                 loading.dismiss();
-                Toasty.error(HomeRegistrationActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toasty.error(NeighbourhoodActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -115,6 +122,7 @@ public class HomeRegistrationActivity extends AppCompatActivity {
 
 
     public String getUserID() {
+        Toasty.info(NeighbourhoodActivity.this, "user : "+ userID , Toasty.LENGTH_LONG).show();
         return userID;
     }
 

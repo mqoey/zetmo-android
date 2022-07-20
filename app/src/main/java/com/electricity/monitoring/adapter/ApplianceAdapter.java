@@ -60,7 +60,7 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
         String applianceID = applianceData.get(position).getApplianceId();
 
         holder.txtApplianceName.setText(name);
-        holder.txtApplianceConsumption.setText(consumption + " KHz per hour");
+        holder.txtApplianceConsumption.setText(consumption + " KWh per hour");
         holder.txtApplianceCondition.setText(condition);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

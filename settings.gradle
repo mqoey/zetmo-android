@@ -5,6 +5,9 @@ pluginManagement {
         mavenCentral()
         maven { url "https://jitpack.io" }
     }
+//    dependencies {
+//        classpath 'com.google.gms:google-services:4.3.13'
+//    }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -13,6 +16,9 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url "https://jitpack.io" }
     }
+//    dependencies {
+//        classpath 'com.google.gms:google-services:4.3.13'
+//    }
 }
 rootProject.name = "Electricity Monitoring"
 include ':app'

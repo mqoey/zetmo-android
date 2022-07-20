@@ -49,7 +49,7 @@ public class TokenAdapter extends RecyclerView.Adapter<TokenAdapter.MyViewHolder
 
         holder.txt_id.setText("Token Id : "+id);
         holder.txt_amount.setText("Amount paid : $"+amount_paid);
-        holder.txt_power.setText("Power bought : "+power_bought +" KHz");
+        holder.txt_power.setText("Power bought : "+power_bought +" KWh");
     }
 
     @Override

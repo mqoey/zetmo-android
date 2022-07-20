@@ -64,7 +64,7 @@ public class TarrifActivity extends AppCompatActivity {
                     String date = response.body().getDate();
 
                     txtdate.setText(date);
-                    txtprice.setText("$" + price + " /1KHz");
+                    txtprice.setText("$" + price + " /1KWh");
 
                     dbHandler.fetchTarrifs(date, price, tarrifID);
                 }
@@ -79,7 +79,7 @@ public class TarrifActivity extends AppCompatActivity {
                 String date = tarrifArrayList.get(0).getDate();
 
                 txtdate.setText(date);
-                txtprice.setText("$" + price + " /1KHz");
+                txtprice.setText("$" + price + " /1KWh");
                 Toasty.error(TarrifActivity.this, "No Internet Connectivity", Toasty.LENGTH_LONG).show();
             }
         });
