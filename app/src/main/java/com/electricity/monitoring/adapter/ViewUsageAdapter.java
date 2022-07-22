@@ -110,7 +110,7 @@ public class ViewUsageAdapter extends RecyclerView.Adapter<ViewUsageAdapter.MyVi
 
         holder.txtName.setText(appliance.get(0).getApplianceName());
         holder.txtDuration.setText(duration);
-        holder.txt_consumption.setText(consumption + " KWh");
+        holder.txt_consumption.setText(new StringBuilder().append(consumption).append(" KWh").toString());
 
         File imageUrl = new File(image);
 

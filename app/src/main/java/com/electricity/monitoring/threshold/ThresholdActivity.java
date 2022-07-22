@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ public class ThresholdActivity extends AppCompatActivity {
         calculate = findViewById(R.id.btn_calculate);
         dbHandler = new DBHandler(ThresholdActivity.this);
 
-        threshold.setText(dbHandler.checkThreshold() + " KWh");
+        threshold.setText(new StringBuilder().append(dbHandler.checkThreshold()).append(" KWh").toString());
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
@@ -40,5 +41,14 @@ public class ThresholdActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    //for back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

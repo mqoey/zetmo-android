@@ -424,6 +424,8 @@ public class DBHandler extends SQLiteOpenHelper {
             }
             difference = (dateMax.getTime() - startTime.getTime()) + (endTime.getTime() - dateMin.getTime());
         }
+
+
         int hours = (int) (difference / (1000 * 60 * 60));
         int min = (int) (difference - (1000 * 60 * 60 * hours)) / (1000 * 60);
 
@@ -539,15 +541,21 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public String checkThreshold() {
         String threshold ="";
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_THRESHOLDS + " WHERE " + STATUS_COL + "=?", new String[]{"1"});
         if (cursor.moveToFirst()) {
             threshold = cursor.getString(1);
         }
         else {
-            addThreshold("0");
-//            threshold = "no threshold";
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(ENERGY_COL, "0");
+            contentValues.put(STATUS_COL, "1");
+
+            sqLiteDatabase.execSQL("delete from " + Constant.TABLE_THRESHOLDS);
+            sqLiteDatabase.insert(Constant.TABLE_THRESHOLDS, null, contentValues);
+            sqLiteDatabase.close();
         }
         cursor.close();
         return threshold;
