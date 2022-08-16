@@ -101,10 +101,13 @@ public class ViewUsageAdapter extends RecyclerView.Adapter<ViewUsageAdapter.MyVi
         tarrifArrayList = dbHandler.getTarrif();
         String tarrif = tarrifArrayList.get(0).getPrice();
 
-        String duration = hours + "hrs " + min + "mins";
-        double consumption = (difference / (1000 * 60 * 60)) * Double.parseDouble(tarrif);
-
         ArrayList<Appliance> appliance = dbHandler.getAppliancesByID(applianceID);
+
+        String applianceConsumption = appliance.get(0).getApplianceConsumption();
+
+        String duration = hours + "hrs " + min + "mins";
+        double consumption = ((difference / (1000 * 60 * 60)) * Double.parseDouble(applianceConsumption)) + ((difference - (1000 * 60 * 60 * hours)) / (1000 * 60) * Double.parseDouble(applianceConsumption));
+
 
         String image = appliance.get(0).getApplianceImage();
 

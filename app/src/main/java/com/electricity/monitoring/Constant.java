@@ -22,6 +22,8 @@ public class Constant {
     public static final String SP_EMAIL = "email";
     public static final String SP_METER_NUMBER = "meter_number";
 
+    public static final String STAGE_ID = "stage_id";
+    public static final String AREA_ID = "area_id";
     public static final String APPLIANCE_ID = "appliance_id";
     public static final String APPLIANCE_NAME = "appliance_name";
     public static final String APPLIANCE_DESCRIPTION = "appliance_description";

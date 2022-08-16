@@ -51,5 +51,6 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="tarrif">Tarrif</string>
     <string name="msg_token_fmt">token</string>
+    <string name="title_activity_home">HomeActivity</string>
 
 </resources>

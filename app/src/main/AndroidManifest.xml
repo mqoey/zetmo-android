@@ -26,22 +26,33 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".neighbourhood.NeighbourhoodStageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".stage.LoadsheddingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".stage.StageActivity"
+            android:exported="true" />
+        <activity
             android:name=".threshold.CalculateThresholdActivity"
             android:exported="false" />
         <activity
             android:name=".threshold.ThresholdActivity"
             android:exported="false" />
-        <!--
-     Set custom default icon. This is used when no icon is set for incoming notification messages.
-     See README(https://goo.gl/l4GJaQ) for more.
-        -->
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/logo" />
-        <!--
- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more.
-        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
@@ -112,15 +123,6 @@
         <activity
             android:name=".appliance.ViewApplianceActivity"
             android:exported="true" />
-        <activity
-            android:name=".SplashActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

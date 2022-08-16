@@ -1,5 +1,10 @@
 package com.electricity.monitoring.neighbourhood;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -7,13 +12,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.electricity.monitoring.R;
 import com.electricity.monitoring.adapter.NeighbourhoodAdapter;
+import com.electricity.monitoring.adapter.NeighbourhoodStageAdapter;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
 import com.electricity.monitoring.database.DBHandler;
@@ -27,13 +28,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NeighbourhoodActivity extends AppCompatActivity {
+public class NeighbourhoodStageActivity extends AppCompatActivity {
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     EditText etxtSearch;
     ProgressDialog loading;
     private RecyclerView recyclerView;
-    private NeighbourhoodAdapter neighbourhoodAdapter;
+    private NeighbourhoodStageAdapter neighbourhoodStageAdapter;
     private ShimmerFrameLayout mShimmerViewContainer;
     public String userID;
     DBHandler dbHandler;
@@ -41,16 +42,10 @@ public class NeighbourhoodActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_registration);
+        setContentView(R.layout.activity_neighbourhood_stage);
 
         recyclerView = findViewById(R.id.neighbourhood_recyclerview);
         etxtSearch = findViewById(R.id.etxt_search2);
-
-//        dbHandler = new DBHandler(NeighbourhoodActivity.this);
-//
-//        userID = dbHandler.loggedInUserID();
-//
-//getUserID();
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
@@ -95,7 +90,7 @@ public class NeighbourhoodActivity extends AppCompatActivity {
                         //Stopping Shimmer Effects
                         mShimmerViewContainer.stopShimmer();
                         mShimmerViewContainer.setVisibility(View.GONE);
-                        Toasty.info(NeighbourhoodActivity.this, "No Neighbourhoods", Toast.LENGTH_SHORT).show();
+                        Toasty.info(NeighbourhoodStageActivity.this, "No Neighbourhoods", Toast.LENGTH_SHORT).show();
 
                     } else {
                         //Stopping Shimmer Effects
@@ -103,8 +98,8 @@ public class NeighbourhoodActivity extends AppCompatActivity {
                         mShimmerViewContainer.setVisibility(View.GONE);
 
                         recyclerView.setVisibility(View.VISIBLE);
-                        neighbourhoodAdapter = new NeighbourhoodAdapter(neighbourhoodArrayList, NeighbourhoodActivity.this);
-                        recyclerView.setAdapter(neighbourhoodAdapter);
+                        neighbourhoodStageAdapter = new NeighbourhoodStageAdapter(neighbourhoodArrayList, NeighbourhoodStageActivity.this);
+                        recyclerView.setAdapter(neighbourhoodStageAdapter);
                     }
                 }
             }
@@ -112,19 +107,9 @@ public class NeighbourhoodActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ArrayList<Neighbourhood>> call, Throwable t) {
                 loading.dismiss();
-                Toasty.error(NeighbourhoodActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toasty.error(NeighbourhoodStageActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-//    public String getUserID(){
-//        return userID;
-//    }
-
-
-    public String getUserID() {
-        Toasty.info(NeighbourhoodActivity.this, "user : "+ userID , Toasty.LENGTH_LONG).show();
-        return userID;
     }
 
     //for back button
@@ -136,5 +121,4 @@ public class NeighbourhoodActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

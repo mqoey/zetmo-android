@@ -101,10 +101,13 @@ public class ViewReportAdapter extends RecyclerView.Adapter<ViewReportAdapter.My
         tarrifArrayList = dbHandler.getTarrif();
         String tarrif = tarrifArrayList.get(0).getPrice();
 
-        String duration = hours + "hrs " + min + "mins";
-        double consumption = (difference / (1000 * 60 * 60)) * Double.parseDouble(tarrif);
-
         ArrayList<Appliance> appliance = dbHandler.getAppliancesByID(applianceID);
+
+        String applianceConsumption = appliance.get(0).getApplianceConsumption();
+
+        String duration = hours + "hrs " + min + "mins";
+        double consumption = (difference) * Double.parseDouble(applianceConsumption);
+
 
         String image = appliance.get(0).getApplianceImage();
 

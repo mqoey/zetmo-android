@@ -193,6 +193,28 @@ public class DBHandler extends SQLiteOpenHelper {
         return applianceArrayList;
     }
 
+    public ArrayList<Appliance> getAppliancesByName(String appliance_name) {
+
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_APPLIANCES + " WHERE " + NAME_COL + "=?", new String[]{appliance_name});
+        ArrayList<Appliance> applianceArrayList = new ArrayList<>();
+
+        if (cursorAppliances.moveToFirst()) {
+            do {
+                applianceArrayList.add(new Appliance(
+                        cursorAppliances.getString(0),
+                        cursorAppliances.getString(1),
+                        cursorAppliances.getString(2),
+                        cursorAppliances.getString(3),
+                        cursorAppliances.getString(4),
+                        cursorAppliances.getString(5),
+                        cursorAppliances.getString(6)));
+            } while (cursorAppliances.moveToNext());
+        }
+        cursorAppliances.close();
+        return applianceArrayList;
+    }
+
     public void deleteAppliance(String applianceID) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.delete(Constant.TABLE_APPLIANCES, ID_COL + "=?", new String[]{applianceID});

@@ -4,6 +4,7 @@ package com.electricity.monitoring.api;
 import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.model.ClientNeighbourhood;
 import com.electricity.monitoring.model.Neighbourhood;
+import com.electricity.monitoring.model.Stage;
 import com.electricity.monitoring.model.Tarrif;
 import com.electricity.monitoring.model.Token;
 import com.electricity.monitoring.model.User;
@@ -70,4 +71,9 @@ public interface ApiInterface {
     Call<Token> purchasetoken(
             @Field("client_id") String client_id,
             @Field("amount_paid") String amount_paid);
+
+    @GET("neighbourhoodstage")
+    Call<Stage> getneighbourhoodstage(
+            @Query("neighbourhood_id") String client_id
+    );
 }

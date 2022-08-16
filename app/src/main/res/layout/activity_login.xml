@@ -75,7 +75,7 @@
                             android:layout_centerHorizontal="true"
                             android:background="@drawable/round_border"
                             android:hint="Meter Number"
-                            android:inputType="textEmailAddress"
+                            android:inputType="number"
                             android:padding="16dp"
                             android:textColor="@color/colorPrimary"
                             android:textColorHint="@color/colorPrimary"
