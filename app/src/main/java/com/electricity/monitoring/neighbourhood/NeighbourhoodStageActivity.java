@@ -51,7 +51,7 @@ public class NeighbourhoodStageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_neighbourhood_stage);
 
         recyclerView = findViewById(R.id.neighbourhood_recyclerview);
-        etxtSearch = findViewById(R.id.etxt_search2);
+//        etxtSearch = findViewById(R.id.etxt_search2);
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
@@ -69,29 +69,29 @@ public class NeighbourhoodStageActivity extends AppCompatActivity {
 
         getNeighbourhoods();
 
-        etxtSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.d("data", s.toString());
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if (s.length() > 1) {
-//                    //search data from server
-                    Toast.makeText(NeighbourhoodStageActivity.this, s.toString(), Toast.LENGTH_SHORT).show();
-                    getNeighbourhoodSearch(s.toString());
-                } else {
-                    getNeighbourhoodSearch("");
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Log.d("data", s.toString());
-            }
-        });
+//        etxtSearch.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                Log.d("data", s.toString());
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                if (s.length() > 1) {
+////                    //search data from server
+//                    Toast.makeText(NeighbourhoodStageActivity.this, s.toString(), Toast.LENGTH_SHORT).show();
+//                    getNeighbourhoodSearch(s.toString());
+//                } else {
+//                    getNeighbourhoodSearch("");
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                Log.d("data", s.toString());
+//            }
+//        });
     }
 
     private void getNeighbourhoods() {

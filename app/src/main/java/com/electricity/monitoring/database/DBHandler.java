@@ -107,7 +107,6 @@ public class DBHandler extends SQLiteOpenHelper {
         String query_6 = "CREATE TABLE " + Constant.TABLE_ALARM + " ("
                 + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ENERGY_COL + " TEXT,"
-                + THRESHOLD_ID + " TEXT,"
                 + STATUS_COL + " TEXT)";
 
         sqLiteDatabase.execSQL(query);
@@ -619,7 +618,6 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(ENERGY_COL, energy);
-        contentValues.put(THRESHOLD_ID, "0");
         contentValues.put(STATUS_COL, "0");
 
         sqLiteDatabase.insert(Constant.TABLE_ALARM, null, contentValues);

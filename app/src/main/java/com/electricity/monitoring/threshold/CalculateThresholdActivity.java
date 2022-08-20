@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,14 +22,9 @@ import java.util.ArrayList;
 
 public class CalculateThresholdActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    Spinner paymentOption;
-    TextView btnCalculate, lastCalculated, givenCalculated;
+    TextView btnCalculate;
     EditText amount;
     DBHandler dbHandler;
-    ArrayList<String> appliance;
-    ProgressDialog loading;
-    private String[] optionList;
-    private ArrayList<Appliance> applianceData;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -46,7 +42,8 @@ public class CalculateThresholdActivity extends AppCompatActivity implements Ada
         btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHandler.addAlarm(amount.getText().toString());
+                Toast.makeText(CalculateThresholdActivity.this, amount.getText().toString(), Toast.LENGTH_SHORT).show();
+//                dbHandler.addAlarm(amount.getText().toString());
             }
         });
     }

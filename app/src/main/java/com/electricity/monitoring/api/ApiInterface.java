@@ -79,6 +79,6 @@ public interface ApiInterface {
 
     @GET("neighbourhoodstage")
     Call<Stage> getneighbourhoodstage(
-            @Query("neighbourhood_id") String client_id
+            @Query("neighbourhood_id") String neighbourhood_id
     );
 }

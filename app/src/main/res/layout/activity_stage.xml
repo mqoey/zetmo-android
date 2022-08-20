@@ -110,6 +110,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:id="@+id/layout_stage1"
                             android:foreground="?android:attr/selectableItemBackground"
                             android:gravity="center"
                             android:orientation="vertical">
@@ -148,6 +149,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:id="@+id/layout_stage2"
                             android:foreground="?android:attr/selectableItemBackground"
                             android:gravity="center"
                             android:orientation="vertical">
@@ -190,6 +192,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:id="@+id/layout_stage3"
                             android:foreground="?android:attr/selectableItemBackground"
                             android:gravity="center"
                             android:orientation="vertical">
@@ -256,6 +259,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:id="@+id/layout_stage4"
                             android:foreground="?android:attr/selectableItemBackground"
                             android:gravity="center"
                             android:orientation="vertical">
@@ -310,9 +314,9 @@
                         android:layout_weight="1">
 
                         <LinearLayout
+                            android:id="@+id/layout_stage5"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#AAA"
                             android:foreground="?android:attr/selectableItemBackground"
                             android:gravity="center"
                             android:orientation="vertical">
@@ -368,6 +372,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:id="@+id/layout_stage6"
                             android:foreground="?android:attr/selectableItemBackground"
                             android:gravity="center"
                             android:orientation="vertical">
