@@ -21,38 +21,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:padding="5dp"
-                android:text="Appliance" />
-
-            <Spinner
-                android:id="@+id/payment_option"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="22dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="35dp"
-                android:background="@drawable/round_border"
-                android:hint="Appliance"
-                android:inputType="text"
-                android:padding="16dp"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:padding="5dp"
-                android:text="Time" />
+                android:text="Set Alarm" />
 
             <EditText
-                android:id="@+id/etxt_amount"
+                android:id="@+id/etxt_amount1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="22dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="35dp"
                 android:background="@drawable/round_border"
-                android:hint="Time in minutes"
+                android:hint="Threshold"
                 android:inputType="datetime"
                 android:padding="16dp"
                 android:textColor="@color/colorPrimary"
@@ -70,28 +49,11 @@
                 android:background="@drawable/rounded_button"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Calculate"
+                android:text="Set"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/calculated_last"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:padding="5dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="" />
-
-            <TextView
-                android:id="@+id/calculated_given"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:padding="5dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="" />
         </LinearLayout>
     </ScrollView>
 

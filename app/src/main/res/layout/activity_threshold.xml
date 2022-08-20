@@ -94,7 +94,7 @@
                     android:layout_marginTop="4dp"
                     android:background="@color/red"
                     android:padding="4dp"
-                    android:text="Calculate"
+                    android:text="Set Alarm"
                     android:textColor="#fff"
                     android:textStyle="bold" />
 

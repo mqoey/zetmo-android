@@ -139,7 +139,7 @@
                             android:layout_marginTop="4dp"
                             android:padding="4dp"
                             android:background="@color/red"
-                            android:text="Done"
+                            android:text="Use Token"
                             android:textColor="#fff"
                             android:textStyle="bold" />
                     </com.balysv.materialripple.MaterialRippleLayout>

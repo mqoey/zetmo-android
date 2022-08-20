@@ -88,7 +88,7 @@ public class ViewTokenActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Intent intent = new Intent(ViewTokenActivity.this, PurchasedTokensActivity.class);
+                                Intent intent = new Intent(ViewTokenActivity.this, HomeActivity.class);
                                 DBHandler dbHandler = new DBHandler(ViewTokenActivity.this);
                                 String threshold = response.body().get(0).getPower_bought();
                                 dbHandler.addThreshold(threshold);

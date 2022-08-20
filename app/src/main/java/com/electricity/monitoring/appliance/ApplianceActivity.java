@@ -86,25 +86,9 @@ public class ApplianceActivity extends BaseActivity {
                 Toasty.error(ApplianceActivity.this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
             }
 
-
             //after shuffle id done then swife refresh is off
             mSwipeRefreshLayout.setRefreshing(false);
         });
-
-
-//        if (utils.isNetworkAvailable(ApplianceActivity.this)) {
-////            //Load data from server
-////            getProductsData("",shopID,ownerId);
-//        } else {
-//            recyclerView.setVisibility(View.GONE);
-//            imgNoProduct.setVisibility(View.VISIBLE);
-//            imgNoProduct.setImageResource(R.drawable.not_found);
-//            mSwipeRefreshLayout.setVisibility(View.GONE);
-//            //Stopping Shimmer Effects
-//            mShimmerViewContainer.stopShimmer();
-//            mShimmerViewContainer.setVisibility(View.GONE);
-//            Toasty.error(this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
-//        }
 
         ArrayList<Appliance> applianceArrayList;
         applianceArrayList = dbHandler.getAppliances();
@@ -127,7 +111,6 @@ public class ApplianceActivity extends BaseActivity {
         }
 
         etxtSearch.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 Log.d("data", s.toString());
@@ -135,13 +118,29 @@ public class ApplianceActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                ArrayList<Appliance> applianceArrayList1;
                 if (s.length() > 1) {
-
 //                    //search data from server
-//                    getProductsData(s.toString(),shopID,ownerId);
-//                } else {
-//                    getProductsData("",shopID,ownerId);
+                    applianceArrayList1 = dbHandler.getApplianceSearch(s.toString());
+                } else {
+                    applianceArrayList1 = dbHandler.getApplianceSearch("");
+                }
+
+                if (applianceArrayList1.isEmpty()) {
+
+                    recyclerView.setVisibility(View.GONE);
+                    imgNoProduct.setVisibility(View.VISIBLE);
+                    imgNoProduct.setImageResource(R.drawable.not_found);
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+
+                } else {
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    imgNoProduct.setVisibility(View.GONE);
+                    applianceAdapter = new ApplianceAdapter(ApplianceActivity.this, applianceArrayList1);
+                    recyclerView.setAdapter(applianceAdapter);
                 }
             }
 

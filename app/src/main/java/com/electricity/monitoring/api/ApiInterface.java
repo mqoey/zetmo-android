@@ -45,6 +45,11 @@ public interface ApiInterface {
             @Query("client_id") String client_id
     );
 
+    @GET("neighbourhoodsearch")
+    Call<ArrayList<Neighbourhood>> getNeighbourhoodSearch(
+            @Query("name") String name
+    );
+
     @GET("tarrif")
     Call<Tarrif> getTarrif();
 

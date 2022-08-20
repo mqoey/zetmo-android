@@ -40,6 +40,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String DURATION_COL = "duration";
     private static final String IMAGE_COL = "image";
     private static final String APPLIANCE_ID = "appliance_id";
+    private static final String THRESHOLD_ID = "threshold_id";
     private static final String DATE_COL = "date";
     private static final String START_TIME_COL = "start_time";
     private static final String END_TIME_COL = "end_time";
@@ -103,12 +104,19 @@ public class DBHandler extends SQLiteOpenHelper {
                 + ENERGY_COL + " TEXT,"
                 + STATUS_COL + " TEXT)";
 
+        String query_6 = "CREATE TABLE " + Constant.TABLE_ALARM + " ("
+                + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ENERGY_COL + " TEXT,"
+                + THRESHOLD_ID + " TEXT,"
+                + STATUS_COL + " TEXT)";
+
         sqLiteDatabase.execSQL(query);
         sqLiteDatabase.execSQL(query_1);
         sqLiteDatabase.execSQL(query_2);
         sqLiteDatabase.execSQL(query_3);
         sqLiteDatabase.execSQL(query_4);
         sqLiteDatabase.execSQL(query_5);
+        sqLiteDatabase.execSQL(query_6);
     }
 
     public void addAppliance(String applianceName, String applianceDescription, String applianceCondition, String applianceYears, String applianceConsumption, String applianceImage) {
@@ -197,6 +205,29 @@ public class DBHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_APPLIANCES + " WHERE " + NAME_COL + "=?", new String[]{appliance_name});
+        ArrayList<Appliance> applianceArrayList = new ArrayList<>();
+
+        if (cursorAppliances.moveToFirst()) {
+            do {
+                applianceArrayList.add(new Appliance(
+                        cursorAppliances.getString(0),
+                        cursorAppliances.getString(1),
+                        cursorAppliances.getString(2),
+                        cursorAppliances.getString(3),
+                        cursorAppliances.getString(4),
+                        cursorAppliances.getString(5),
+                        cursorAppliances.getString(6)));
+            } while (cursorAppliances.moveToNext());
+        }
+        cursorAppliances.close();
+        return applianceArrayList;
+    }
+
+    public ArrayList<Appliance> getApplianceSearch(String appliance_name) {
+
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+//        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_APPLIANCES + " WHERE " + NAME_COL + "LIKE" '%", new String[]{appliance_name} + "OR" + DESCRIPTION_COL + "=?", new String[]{appliance_name});
+        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM appliances WHERE name LIKE '%" + appliance_name + "%' OR description LIKE '%" + appliance_name + "%' ORDER BY id DESC", null);
         ArrayList<Appliance> applianceArrayList = new ArrayList<>();
 
         if (cursorAppliances.moveToFirst()) {
@@ -581,6 +612,18 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         cursor.close();
         return threshold;
+    }
+    public void addAlarm(String energy) {
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(ENERGY_COL, energy);
+        contentValues.put(THRESHOLD_ID, "0");
+        contentValues.put(STATUS_COL, "0");
+
+        sqLiteDatabase.insert(Constant.TABLE_ALARM, null, contentValues);
+        sqLiteDatabase.close();
     }
 
     @Override

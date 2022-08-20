@@ -7,17 +7,23 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.electricity.monitoring.R;
+import com.electricity.monitoring.adapter.ApplianceAdapter;
 import com.electricity.monitoring.adapter.NeighbourhoodAdapter;
 import com.electricity.monitoring.adapter.NeighbourhoodStageAdapter;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
+import com.electricity.monitoring.appliance.ApplianceActivity;
 import com.electricity.monitoring.database.DBHandler;
+import com.electricity.monitoring.model.Appliance;
 import com.electricity.monitoring.model.Neighbourhood;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
@@ -62,6 +68,30 @@ public class NeighbourhoodStageActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         getNeighbourhoods();
+
+        etxtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.d("data", s.toString());
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (s.length() > 1) {
+//                    //search data from server
+                    Toast.makeText(NeighbourhoodStageActivity.this, s.toString(), Toast.LENGTH_SHORT).show();
+                    getNeighbourhoodSearch(s.toString());
+                } else {
+                    getNeighbourhoodSearch("");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.d("data", s.toString());
+            }
+        });
     }
 
     private void getNeighbourhoods() {
@@ -72,6 +102,54 @@ public class NeighbourhoodStageActivity extends AppCompatActivity {
 
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<ArrayList<Neighbourhood>> call = apiInterface.getNeighbourhoods();
+        call.enqueue(new Callback<ArrayList<Neighbourhood>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Neighbourhood>> call, Response<ArrayList<Neighbourhood>> response) {
+                loading.dismiss();
+
+                if (response.isSuccessful()) {
+
+                    ArrayList<Neighbourhood> neighbourhoodArrayList;
+                    neighbourhoodArrayList = response.body();
+
+//                    Toasty.success(NeighbourhoodActivity.this, "Got data " + neighbourhoodArrayList.size(), Toast.LENGTH_SHORT).show();
+
+                    if (neighbourhoodArrayList.isEmpty()) {
+
+                        recyclerView.setVisibility(View.GONE);
+                        //Stopping Shimmer Effects
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.GONE);
+                        Toasty.info(NeighbourhoodStageActivity.this, "No Neighbourhoods", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        //Stopping Shimmer Effects
+                        mShimmerViewContainer.stopShimmer();
+                        mShimmerViewContainer.setVisibility(View.GONE);
+
+                        recyclerView.setVisibility(View.VISIBLE);
+                        neighbourhoodStageAdapter = new NeighbourhoodStageAdapter(neighbourhoodArrayList, NeighbourhoodStageActivity.this);
+                        recyclerView.setAdapter(neighbourhoodStageAdapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Neighbourhood>> call, Throwable t) {
+                loading.dismiss();
+                Toasty.error(NeighbourhoodStageActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getNeighbourhoodSearch(String s) {
+        loading = new ProgressDialog(this);
+        loading.setCancelable(false);
+        loading.setMessage(getString(R.string.please_wait));
+        loading.show();
+
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<ArrayList<Neighbourhood>> call = apiInterface.getNeighbourhoodSearch(s);
         call.enqueue(new Callback<ArrayList<Neighbourhood>>() {
             @Override
             public void onResponse(Call<ArrayList<Neighbourhood>> call, Response<ArrayList<Neighbourhood>> response) {
