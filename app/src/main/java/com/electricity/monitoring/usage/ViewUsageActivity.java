@@ -16,7 +16,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.adapter.ViewReportAdapter;
 import com.electricity.monitoring.adapter.ViewUsageAdapter;
 import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.ApplianceTime;
@@ -26,16 +25,13 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import java.util.ArrayList;
 
 public class ViewUsageActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
     ViewUsageAdapter viewUsageAdapter;
     DBHandler dbHandler;
-
     ImageView imgNoProduct;
     EditText etxtSearch;
-
-    private ShimmerFrameLayout mShimmerViewContainer;
     SwipeRefreshLayout mSwipeRefreshLayout;
-
+    private RecyclerView recyclerView;
+    private ShimmerFrameLayout mShimmerViewContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +40,7 @@ public class ViewUsageActivity extends AppCompatActivity {
 
         etxtSearch = findViewById(R.id.etxt_search);
 
-        Utils utils=new Utils();
+        Utils utils = new Utils();
         dbHandler = new DBHandler(ViewUsageActivity.this);
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
@@ -53,7 +49,7 @@ public class ViewUsageActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Usage");
 
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
-        mSwipeRefreshLayout =findViewById(R.id.swipeToRefresh);
+        mSwipeRefreshLayout = findViewById(R.id.swipeToRefresh);
         //set color of swipe refresh
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         recyclerView = findViewById(R.id.product_recyclerview);
@@ -109,6 +105,7 @@ public class ViewUsageActivity extends AppCompatActivity {
 //                    getProductsData("",shopID,ownerId);
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 Log.d("data", s.toString());

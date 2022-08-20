@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:padding="5dp"
-                android:text="Set Alarm" />
+                android:text="Select Threshold to notify" />
 
             <EditText
                 android:id="@+id/etxt_amount1"
@@ -31,7 +31,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="35dp"
                 android:background="@drawable/round_border"
-                android:hint="Threshold"
+                android:hint="0.0 KWh"
                 android:inputType="datetime"
                 android:padding="16dp"
                 android:textColor="@color/colorPrimary"

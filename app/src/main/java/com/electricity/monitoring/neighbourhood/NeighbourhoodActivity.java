@@ -29,14 +29,14 @@ import retrofit2.Response;
 
 public class NeighbourhoodActivity extends AppCompatActivity {
 
+    public String userID;
     SwipeRefreshLayout mSwipeRefreshLayout;
     EditText etxtSearch;
     ProgressDialog loading;
+    DBHandler dbHandler;
     private RecyclerView recyclerView;
     private NeighbourhoodAdapter neighbourhoodAdapter;
     private ShimmerFrameLayout mShimmerViewContainer;
-    public String userID;
-    DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +45,6 @@ public class NeighbourhoodActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.neighbourhood_recyclerview);
         etxtSearch = findViewById(R.id.etxt_search2);
-
-//        dbHandler = new DBHandler(NeighbourhoodActivity.this);
-//
-//        userID = dbHandler.loggedInUserID();
-//
-//getUserID();
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
@@ -123,7 +117,7 @@ public class NeighbourhoodActivity extends AppCompatActivity {
 
 
     public String getUserID() {
-        Toasty.info(NeighbourhoodActivity.this, "user : "+ userID , Toasty.LENGTH_LONG).show();
+        Toasty.info(NeighbourhoodActivity.this, "user : " + userID, Toasty.LENGTH_LONG).show();
         return userID;
     }
 

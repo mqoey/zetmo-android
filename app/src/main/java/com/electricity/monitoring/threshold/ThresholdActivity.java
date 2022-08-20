@@ -48,7 +48,7 @@ public class ThresholdActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_gradient));
         getSupportActionBar().setTitle("Threshold");
 
-        if(dbHandler.checkThreshold().equals("0")){
+        if (dbHandler.checkThreshold().equals("0")) {
             calculate.setEnabled(false);
         }
 

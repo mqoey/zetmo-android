@@ -20,9 +20,12 @@ import com.electricity.monitoring.R;
 import com.electricity.monitoring.appliance.ViewApplianceActivity;
 import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.Appliance;
+import com.electricity.monitoring.model.ApplianceTime;
+import com.electricity.monitoring.model.Tarrif;
 import com.electricity.monitoring.utils.Utils;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -83,7 +86,62 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
                     sp.edit().putBoolean("isChecked" + applianceID, true).apply();
                 } else {
                     dbHandler = new DBHandler(context);
-                    dbHandler.stopApplianceTimer(applianceID, date);
+
+                    Date endTime = null, startTime = null;
+                    ArrayList<ApplianceTime> applianceTimeData = dbHandler.getAppliancesByID2(applianceID);
+                    String start_time = applianceTimeData.get(0).getStart_time();
+                    String end_time = applianceTimeData.get(0).getEnd_time();
+
+                    try {
+                        startTime = mdformat.parse(start_time);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        if (end_time.equals("pending")) {
+                            Calendar calendar = Calendar.getInstance();
+                            String time = mdformat.format(calendar.getTime());
+                            endTime = mdformat.parse(time);
+                        }else {
+                            endTime = mdformat.parse(end_time);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    long difference = endTime.getTime() - startTime.getTime();
+
+                    if (difference < 0) {
+                        Date dateMax = null;
+                        try {
+                            dateMax = mdformat.parse("24:00:00");
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        Date dateMin = null;
+                        try {
+                            dateMin = mdformat.parse("00:00:00");
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        difference = (dateMax.getTime() - startTime.getTime()) + (endTime.getTime() - dateMin.getTime());
+                    }
+                    int hours = (int) (difference / (1000 * 60 * 60));
+                    int min = (int) (difference - (1000 * 60 * 60 * hours)) / (1000 * 60);
+                    DBHandler dbHandler = new DBHandler(context);
+
+                    ArrayList<Tarrif> tarrifArrayList;
+                    tarrifArrayList = dbHandler.getTarrif();
+                    String tarrif = tarrifArrayList.get(0).getPrice();
+
+                    ArrayList<Appliance> appliance = dbHandler.getAppliancesByID(applianceID);
+
+                    String applianceConsumption = appliance.get(0).getApplianceConsumption();
+
+                    String duration = hours + "hrs " + min + "mins";
+                    double consumption = (hours * Double.parseDouble(applianceConsumption)) + (min * (Double.parseDouble(applianceConsumption)) / 60);
+
+                    dbHandler.stopApplianceTimer(applianceID, date, String.valueOf(consumption), duration);
                     sp.edit().putBoolean("isChecked" + applianceID, false).apply();
                 }
             }

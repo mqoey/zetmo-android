@@ -1,29 +1,22 @@
 package com.electricity.monitoring.neighbourhood;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.adapter.ApplianceAdapter;
-import com.electricity.monitoring.adapter.NeighbourhoodAdapter;
 import com.electricity.monitoring.adapter.NeighbourhoodStageAdapter;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
-import com.electricity.monitoring.appliance.ApplianceActivity;
 import com.electricity.monitoring.database.DBHandler;
-import com.electricity.monitoring.model.Appliance;
 import com.electricity.monitoring.model.Neighbourhood;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
@@ -36,14 +29,14 @@ import retrofit2.Response;
 
 public class NeighbourhoodStageActivity extends AppCompatActivity {
 
+    public String userID;
     SwipeRefreshLayout mSwipeRefreshLayout;
     EditText etxtSearch;
     ProgressDialog loading;
+    DBHandler dbHandler;
     private RecyclerView recyclerView;
     private NeighbourhoodStageAdapter neighbourhoodStageAdapter;
     private ShimmerFrameLayout mShimmerViewContainer;
-    public String userID;
-    DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,10 +5,8 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
@@ -17,20 +15,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.adapter.TokenAdapter;
-import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.threshold.ThresholdActivity;
-import com.electricity.monitoring.utils.Utils;
-import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.Date;
 

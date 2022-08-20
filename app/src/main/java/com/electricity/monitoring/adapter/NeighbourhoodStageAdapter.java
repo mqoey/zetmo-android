@@ -1,6 +1,5 @@
 package com.electricity.monitoring.adapter;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,29 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.electricity.monitoring.Constant;
-import com.electricity.monitoring.HomeActivity;
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.api.ApiClient;
-import com.electricity.monitoring.api.ApiInterface;
-import com.electricity.monitoring.appliance.ViewApplianceActivity;
-import com.electricity.monitoring.database.DBHandler;
-import com.electricity.monitoring.model.ClientNeighbourhood;
 import com.electricity.monitoring.model.Neighbourhood;
 import com.electricity.monitoring.stage.StageActivity;
 import com.electricity.monitoring.utils.Utils;
 
 import java.util.ArrayList;
-
-import es.dmoral.toasty.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class NeighbourhoodStageAdapter extends RecyclerView.Adapter<NeighbourhoodStageAdapter.MyViewHolder> {
 

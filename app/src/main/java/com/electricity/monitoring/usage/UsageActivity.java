@@ -1,44 +1,37 @@
 package com.electricity.monitoring.usage;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.adapter.ApplianceAdapter;
-import com.electricity.monitoring.adapter.ReportAdapter;
 import com.electricity.monitoring.adapter.UsageAdapter;
-import com.electricity.monitoring.appliance.ApplianceActivity;
 import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.Appliance;
 import com.electricity.monitoring.model.ApplianceTime;
-import com.electricity.monitoring.report.ReportActivity;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 
 public class UsageActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
     UsageAdapter usageAdapter;
     DBHandler dbHandler;
-
     ImageView imgNoProduct;
     EditText etxtSearch;
-
-    private ShimmerFrameLayout mShimmerViewContainer;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    private RecyclerView recyclerView;
+    private ShimmerFrameLayout mShimmerViewContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +46,7 @@ public class UsageActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Usage");
 
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
-        mSwipeRefreshLayout =findViewById(R.id.swipeToRefresh);
+        mSwipeRefreshLayout = findViewById(R.id.swipeToRefresh);
         //set color of swipe refresh
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         recyclerView = findViewById(R.id.product_recyclerview);

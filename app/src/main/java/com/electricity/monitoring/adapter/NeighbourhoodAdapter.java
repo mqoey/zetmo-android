@@ -21,7 +21,6 @@ import com.electricity.monitoring.api.ApiInterface;
 import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.ClientNeighbourhood;
 import com.electricity.monitoring.model.Neighbourhood;
-import com.electricity.monitoring.profile.ProfileActivity;
 import com.electricity.monitoring.utils.Utils;
 
 import java.util.ArrayList;

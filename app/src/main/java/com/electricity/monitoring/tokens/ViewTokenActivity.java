@@ -3,7 +3,6 @@ package com.electricity.monitoring.tokens;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.electricity.monitoring.HomeActivity;
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.adapter.TokenAdapter;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
 import com.electricity.monitoring.database.DBHandler;

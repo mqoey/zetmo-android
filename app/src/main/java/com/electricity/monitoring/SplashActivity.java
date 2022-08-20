@@ -1,13 +1,12 @@
 package com.electricity.monitoring;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
@@ -18,7 +17,6 @@ import com.electricity.monitoring.tarrif.TarrifActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
@@ -27,33 +25,33 @@ import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
-DBHandler dbHandler;
-TarrifActivity tarrifActivity;
     public static int splashTimeOut = 3000;
+    DBHandler dbHandler;
+    TarrifActivity tarrifActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-            ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-            Call<Tarrif> call = apiInterface.getTarrif();
-            call.enqueue(new Callback<Tarrif>() {
-                @Override
-                public void onResponse(@NonNull Call<Tarrif> call, @NonNull Response<Tarrif> response) {
-                    if (response.code() == 200) {
-                        String tarrifID = response.body().getId();
-                        String price = response.body().getPrice();
-                        String date = response.body().getDate();
-                        dbHandler.fetchTarrifs(date, price, tarrifID);
-                    }
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<Tarrif> call = apiInterface.getTarrif();
+        call.enqueue(new Callback<Tarrif>() {
+            @Override
+            public void onResponse(@NonNull Call<Tarrif> call, @NonNull Response<Tarrif> response) {
+                if (response.code() == 200) {
+                    String tarrifID = response.body().getId();
+                    String price = response.body().getPrice();
+                    String date = response.body().getDate();
+                    dbHandler.fetchTarrifs(date, price, tarrifID);
                 }
+            }
 
-                @Override
-                public void onFailure(Call<Tarrif> call, Throwable t) {
-                    Toasty.error(SplashActivity.this, "No Internet Connectivity", Toasty.LENGTH_SHORT).show();
-                }
-            });
+            @Override
+            public void onFailure(Call<Tarrif> call, Throwable t) {
+                Toasty.error(SplashActivity.this, "No Internet Connectivity", Toasty.LENGTH_SHORT).show();
+            }
+        });
 
         dbHandler = new DBHandler(SplashActivity.this);
 
@@ -83,16 +81,13 @@ TarrifActivity tarrifActivity;
         }, splashTimeOut);
     }
 
-    public void checkAuthStatus()
-    {
+    public void checkAuthStatus() {
         boolean status = dbHandler.checkLogin();
 
-        if (status)
-        {
+        if (status) {
             Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
         }

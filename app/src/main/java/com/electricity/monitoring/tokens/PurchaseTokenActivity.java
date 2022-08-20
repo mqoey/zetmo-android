@@ -2,39 +2,26 @@ package com.electricity.monitoring.tokens;
 
 import static com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype.Slidetop;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.electricity.monitoring.HomeActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.adapter.TokenAdapter;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
-import com.electricity.monitoring.appliance.ApplianceActivity;
-import com.electricity.monitoring.appliance.ViewApplianceActivity;
-import com.electricity.monitoring.auth.LoginActivity;
 import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.Token;
 import com.electricity.monitoring.model.User;
-import com.electricity.monitoring.profile.ProfileActivity;
-import com.electricity.monitoring.utils.Utils;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 
 import java.util.ArrayList;
@@ -46,13 +33,13 @@ import retrofit2.Response;
 
 public class PurchaseTokenActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    private static final String[] optionList = {"Ecocash", "Bank Transfer"};
     Spinner paymentOption;
     TextView btnPurchase;
     EditText amount;
     DBHandler dbHandler;
     ArrayList<User> userArrayList;
     ProgressDialog loading;
-    private static final String[] optionList = {"Ecocash", "Bank Transfer"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,63 +57,63 @@ public class PurchaseTokenActivity extends AppCompatActivity implements AdapterV
 
         btnPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
-                public void onClick(View view) {
-                    NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(PurchaseTokenActivity.this);
-                    dialogBuilder
-                            .withTitle("Purchase")
-                            .withMessage("Proceed with purchase ?")
-                            .withEffect(Slidetop)
-                            .withDialogColor("#637ECF") //use color code for dialog
-                            .withButton1Text(getString(R.string.yes))
-                            .withButton2Text(getString(R.string.cancel))
-                            .setButton1Click(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    loading = new ProgressDialog(PurchaseTokenActivity.this);
-                                    loading.setCancelable(false);
-                                    loading.setMessage(getString(R.string.please_wait));
-                                    loading.show();
+            public void onClick(View view) {
+                NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(PurchaseTokenActivity.this);
+                dialogBuilder
+                        .withTitle("Purchase")
+                        .withMessage("Proceed with purchase ?")
+                        .withEffect(Slidetop)
+                        .withDialogColor("#637ECF") //use color code for dialog
+                        .withButton1Text(getString(R.string.yes))
+                        .withButton2Text(getString(R.string.cancel))
+                        .setButton1Click(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                loading = new ProgressDialog(PurchaseTokenActivity.this);
+                                loading.setCancelable(false);
+                                loading.setMessage(getString(R.string.please_wait));
+                                loading.show();
 
-                                    dbHandler = new DBHandler(PurchaseTokenActivity.this);
-                                    userArrayList = dbHandler.getUser();
-                                    String client_id = userArrayList.get(0).getUserID();
-                                    String amount_paid = amount.getText().toString();
+                                dbHandler = new DBHandler(PurchaseTokenActivity.this);
+                                userArrayList = dbHandler.getUser();
+                                String client_id = userArrayList.get(0).getUserID();
+                                String amount_paid = amount.getText().toString();
 
-                                    ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-                                    Call<Token> call = apiInterface.purchasetoken(client_id, amount_paid);
+                                ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+                                Call<Token> call = apiInterface.purchasetoken(client_id, amount_paid);
 
-                                    call.enqueue(new Callback<Token>() {
-                                        @Override
-                                        public void onResponse(Call<Token> call, Response<Token> response) {
-                                            loading.dismiss();
-                                            if (response.code() == 200) {
-                                                Toasty.success(PurchaseTokenActivity.this,"Purchased successfully", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(getApplicationContext(), PurchasedTokensActivity.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                startActivity(intent);
-                                                dialogBuilder.dismiss();
-                                                finish();
-                                            } else {
-                                                Toasty.error(PurchaseTokenActivity.this, "Failed purchasing", Toast.LENGTH_SHORT).show();
-                                            }
+                                call.enqueue(new Callback<Token>() {
+                                    @Override
+                                    public void onResponse(Call<Token> call, Response<Token> response) {
+                                        loading.dismiss();
+                                        if (response.code() == 200) {
+                                            Toasty.success(PurchaseTokenActivity.this, "Purchased successfully", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(getApplicationContext(), PurchasedTokensActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                            dialogBuilder.dismiss();
+                                            finish();
+                                        } else {
+                                            Toasty.error(PurchaseTokenActivity.this, "Failed purchasing", Toast.LENGTH_SHORT).show();
                                         }
+                                    }
 
-                                        @Override
-                                        public void onFailure(Call<Token> call, Throwable t) {
-                                            loading.dismiss();
-                                            Toasty.error(PurchaseTokenActivity.this, "Something went wrong "+t.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            })
-                            .setButton2Click(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialogBuilder.dismiss();
-                                }
-                            })
-                            .show();
-                }
+                                    @Override
+                                    public void onFailure(Call<Token> call, Throwable t) {
+                                        loading.dismiss();
+                                        Toasty.error(PurchaseTokenActivity.this, "Something went wrong " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        })
+                        .setButton2Click(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogBuilder.dismiss();
+                            }
+                        })
+                        .show();
+            }
         });
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, optionList);

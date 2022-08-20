@@ -430,7 +430,7 @@ public class DBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    public void stopApplianceTimer(String applianceID, String date) {
+    public void stopApplianceTimer(String applianceID, String date, String consumption, String duration) {
         String start_time = "";
         String end_time = "";
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -440,16 +440,6 @@ public class DBHandler extends SQLiteOpenHelper {
         Date endTime = null, startTime = null;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 
-        if (cursor.moveToFirst()) {
-            start_time = cursor.getString(2);
-        }
-        cursor.close();
-
-        try {
-            startTime = simpleDateFormat.parse(start_time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         try {
             Calendar calendar = Calendar.getInstance();
             end_time = simpleDateFormat.format(calendar.getTime());
@@ -458,42 +448,33 @@ public class DBHandler extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
-        long difference = endTime.getTime() - startTime.getTime();
-//        long difference = startTime.getTime();
-
-        if (difference < 0) {
-            Date dateMax = null;
-            try {
-                dateMax = simpleDateFormat.parse("24:00:00");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            Date dateMin = null;
-            try {
-                dateMin = simpleDateFormat.parse("00:00:00");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            difference = (dateMax.getTime() - startTime.getTime()) + (endTime.getTime() - dateMin.getTime());
+        if (cursor.moveToFirst()) {
+            start_time = cursor.getString(2);
         }
-
-
-        int hours = (int) (difference / (1000 * 60 * 60));
-        int min = (int) (difference - (1000 * 60 * 60 * hours)) / (1000 * 60);
-
-        String duration = hours + "hrs " + min + "mins";
-
-        ArrayList<Tarrif> tarrifArrayList;
-        tarrifArrayList = getTarrif();
-        String tarrif = tarrifArrayList.get(0).getPrice();
-
-        double consumption = (difference / (1000 * 60 * 60)) * Double.parseDouble(tarrif);
+        cursor.close();
 
         contentValues.put(END_TIME_COL, end_time);
         contentValues.put(DURATION_COL, duration);
         contentValues.put(CONSUMPTION_COL, consumption);
 
         sqLiteDatabase.update(Constant.TABLE_TIME_TRACKING, contentValues, APPLIANCE_ID + "=? AND " + DATE_COL + "=? AND " + END_TIME_COL + "=?", new String[]{applianceID, date, "pending"});
+        sqLiteDatabase.close();
+
+        subtractThreshold(String.valueOf(consumption));
+    }
+
+    public void subtractThreshold(String threshold) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        String currentThreshold = checkThreshold();
+        String newThreshold = String.valueOf((Float.parseFloat(currentThreshold)) - (Float.parseFloat(threshold)));
+
+        contentValues.put(ENERGY_COL, newThreshold);
+        contentValues.put(STATUS_COL, "1");
+
+        sqLiteDatabase.execSQL("delete from " + Constant.TABLE_THRESHOLDS);
+        sqLiteDatabase.insert(Constant.TABLE_THRESHOLDS, null, contentValues);
         sqLiteDatabase.close();
     }
 
@@ -572,14 +553,37 @@ public class DBHandler extends SQLiteOpenHelper {
         return applianceTimeArrayList;
     }
 
+    public ArrayList<ApplianceTime> getAppliancesByID2(String appliance_id) {
+
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursorAppliances = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_TIME_TRACKING + " WHERE " + APPLIANCE_ID + "=? AND " + END_TIME_COL + "=?", new String[]{appliance_id, "pending"});
+
+        ArrayList<ApplianceTime> applianceTimeArrayList = new ArrayList<>();
+
+        if (cursorAppliances.moveToFirst()) {
+            do {
+                applianceTimeArrayList.add(new ApplianceTime(
+                        cursorAppliances.getString(1),
+                        cursorAppliances.getString(2),
+                        cursorAppliances.getString(3),
+                        cursorAppliances.getString(4),
+                        cursorAppliances.getString(5),
+                        cursorAppliances.getString(6)));
+            } while (cursorAppliances.moveToNext());
+        }
+        cursorAppliances.close();
+        return applianceTimeArrayList;
+    }
+
     public void addThreshold(String energy) {
         String new_energy = "";
-        long newThreshold = 0, oldThreshold = 0;
+        float newThreshold = 0, oldThreshold = 0;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        newThreshold = Long.parseLong(energy);
-        oldThreshold = Long.parseLong(checkThreshold());
+        newThreshold = Float.parseFloat(energy);
+        oldThreshold = Float.parseFloat(checkThreshold());
 
         new_energy = String.valueOf(newThreshold + oldThreshold);
 
@@ -592,14 +596,13 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public String checkThreshold() {
-        String threshold ="";
+        String threshold = "";
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_THRESHOLDS + " WHERE " + STATUS_COL + "=?", new String[]{"1"});
         if (cursor.moveToFirst()) {
             threshold = cursor.getString(1);
-        }
-        else {
+        } else {
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(ENERGY_COL, "0");
@@ -612,6 +615,7 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         return threshold;
     }
+
     public void addAlarm(String energy) {
 
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -621,6 +625,25 @@ public class DBHandler extends SQLiteOpenHelper {
         contentValues.put(STATUS_COL, "0");
 
         sqLiteDatabase.insert(Constant.TABLE_ALARM, null, contentValues);
+        sqLiteDatabase.close();
+    }
+
+    public String checkAlarm() {
+        String threshold = "";
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + Constant.TABLE_ALARM + " WHERE " + STATUS_COL + "=?", new String[]{"0"});
+        if (cursor.moveToFirst()) {
+            threshold = cursor.getString(1);
+        }
+        cursor.close();
+        return threshold;
+    }
+
+    public void updateAlarm() {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        sqLiteDatabase.execSQL("delete from " + Constant.TABLE_ALARM);
         sqLiteDatabase.close();
     }
 

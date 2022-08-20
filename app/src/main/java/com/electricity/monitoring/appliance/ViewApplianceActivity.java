@@ -2,8 +2,6 @@ package com.electricity.monitoring.appliance;
 
 import static com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype.Slidetop;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,11 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.electricity.monitoring.Constant;
-import com.electricity.monitoring.HomeActivity;
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.auth.LoginActivity;
 import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.Appliance;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
@@ -33,9 +31,8 @@ public class ViewApplianceActivity extends AppCompatActivity {
     ImageView viewImage;
     Button editAppliance, deleteAppliance;
     String applianceID;
-
-    private ArrayList<Appliance> applianceData;
     DBHandler dbHandler;
+    private ArrayList<Appliance> applianceData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +74,7 @@ public class ViewApplianceActivity extends AppCompatActivity {
                             public void onClick(View v) {
 
                                 dbHandler.deleteAppliance(applianceID);
-                                Toasty.success(ViewApplianceActivity.this,"Deleted successfully", Toast.LENGTH_SHORT).show();
+                                Toasty.success(ViewApplianceActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
 
                                 Intent intent = new Intent(getApplicationContext(), ApplianceActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -106,7 +103,7 @@ public class ViewApplianceActivity extends AppCompatActivity {
         });
     }
 
-    public void getAppliance(String applianceID){
+    public void getAppliance(String applianceID) {
         applianceData = dbHandler.getAppliancesByID(applianceID);
 
         final String appliance_id = applianceData.get(0).getApplianceId();
@@ -119,7 +116,7 @@ public class ViewApplianceActivity extends AppCompatActivity {
 
         viewName.setText("Name : " + name);
         viewCondition.setText("Condition : " + condition);
-        viewConsumption.setText("Consumption : "+ consumption + " Kw\\h");
+        viewConsumption.setText("Consumption : " + consumption + " Kw\\h");
         viewDescription.setText("Description : " + description);
         viewYear.setText("Years : " + years + " yrs");
 

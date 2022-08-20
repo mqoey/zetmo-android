@@ -10,9 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.appliance.ViewApplianceActivity;
 import com.electricity.monitoring.model.Token;
 import com.electricity.monitoring.tokens.ViewTokenActivity;
 import com.electricity.monitoring.utils.Utils;
@@ -47,9 +45,9 @@ public class TokenAdapter extends RecyclerView.Adapter<TokenAdapter.MyViewHolder
         String token_number = token.getToken_number();
         String power_bought = token.getPower_bought();
 
-        holder.txt_id.setText("Token Id : "+id);
-        holder.txt_amount.setText("Amount paid : $"+amount_paid);
-        holder.txt_power.setText("Power bought : "+power_bought +" KWh");
+        holder.txt_id.setText("Token Id : " + id);
+        holder.txt_amount.setText("Amount paid : $" + amount_paid);
+        holder.txt_power.setText("Power bought : " + power_bought + " KWh");
     }
 
     @Override
@@ -57,8 +55,9 @@ public class TokenAdapter extends RecyclerView.Adapter<TokenAdapter.MyViewHolder
         return tokenData.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView txt_amount, txt_power, txt_id;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 

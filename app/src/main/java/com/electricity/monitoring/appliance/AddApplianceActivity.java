@@ -1,6 +1,5 @@
 package com.electricity.monitoring.appliance;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

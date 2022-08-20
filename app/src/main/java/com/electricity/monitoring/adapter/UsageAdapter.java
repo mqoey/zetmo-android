@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.R;
 import com.electricity.monitoring.model.ApplianceTime;
-import com.electricity.monitoring.report.ViewReportActivity;
 import com.electricity.monitoring.usage.ViewUsageActivity;
 import com.electricity.monitoring.utils.Utils;
 

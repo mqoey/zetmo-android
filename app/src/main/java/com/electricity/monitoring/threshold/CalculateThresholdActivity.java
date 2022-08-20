@@ -1,13 +1,11 @@
 package com.electricity.monitoring.threshold;
 
-import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,9 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.electricity.monitoring.R;
 import com.electricity.monitoring.database.DBHandler;
-import com.electricity.monitoring.model.Appliance;
-
-import java.util.ArrayList;
 
 public class CalculateThresholdActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -39,11 +34,14 @@ public class CalculateThresholdActivity extends AppCompatActivity implements Ada
 
         btnCalculate = findViewById(R.id.btn_purchase);
         amount = findViewById(R.id.etxt_amount1);
+
+        dbHandler = new DBHandler(CalculateThresholdActivity.this);
+
         btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(CalculateThresholdActivity.this, amount.getText().toString(), Toast.LENGTH_SHORT).show();
-//                dbHandler.addAlarm(amount.getText().toString());
+                dbHandler.addAlarm(amount.getText().toString());
             }
         });
     }

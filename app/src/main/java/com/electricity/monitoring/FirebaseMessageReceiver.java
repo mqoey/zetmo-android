@@ -1,16 +1,9 @@
 package com.electricity.monitoring;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import androidx.work.ListenableWorker;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -19,8 +12,6 @@ import androidx.work.WorkerParameters;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import javax.xml.transform.Result;
 
 public class FirebaseMessageReceiver
         extends FirebaseMessagingService {
@@ -58,6 +49,7 @@ public class FirebaseMessageReceiver
     // [END receive_message]
 
     // [START on_new_token]
+
     /**
      * There are two scenarios when onNewToken is called:
      * 1) When a new token is generated on initial app startup

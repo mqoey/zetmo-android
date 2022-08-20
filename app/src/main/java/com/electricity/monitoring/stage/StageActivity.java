@@ -4,22 +4,16 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.electricity.monitoring.Constant;
 import com.electricity.monitoring.R;
-import com.electricity.monitoring.adapter.NeighbourhoodAdapter;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
-import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.Stage;
-import com.facebook.shimmer.ShimmerFrameLayout;
 
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;

@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.electricity.monitoring.HomeActivity;
 import com.electricity.monitoring.R;
 import com.electricity.monitoring.api.ApiClient;
 import com.electricity.monitoring.api.ApiInterface;
@@ -105,6 +104,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 } else if (meter_number1.isEmpty()) {
                     etxt_MeterNumber.setError(getString(R.string.please_enter_meternumber));
                     etxt_MeterNumber.requestFocus();
+                } else if (meter_number1.length() < 11) {
+                    etxt_MeterNumber.setError("Meter number too short");
+                    etxt_MeterNumber.requestFocus();
                 } else if (address1.isEmpty()) {
                     etxt_Address.setError(getString(R.string.please_enter_address));
                     etxt_Address.requestFocus();
@@ -119,7 +121,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     etxt_ConfirmPassword.requestFocus();
                 } else {
                     if (utils.isNetworkAvailable(RegistrationActivity.this)) {
-                        Toast.makeText(RegistrationActivity.this, token, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(RegistrationActivity.this, token, Toast.LENGTH_SHORT).show();
                         register(email1, password1, address1, meter_number1, first_name1, last_name1, token);
                     } else {
                         Toasty.error(RegistrationActivity.this, R.string.no_network_connection, Toast.LENGTH_SHORT).show();

@@ -24,11 +24,8 @@ import com.electricity.monitoring.appliance.ApplianceActivity;
 import com.electricity.monitoring.auth.LoginActivity;
 import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.neighbourhood.NeighbourhoodStageActivity;
-import com.electricity.monitoring.notification.NotificationReceiver;
 import com.electricity.monitoring.profile.ProfileActivity;
-import com.electricity.monitoring.report.ReportActivity;
 import com.electricity.monitoring.stage.LoadsheddingActivity;
-import com.electricity.monitoring.stage.StageActivity;
 import com.electricity.monitoring.tarrif.TarrifActivity;
 import com.electricity.monitoring.threshold.ThresholdActivity;
 import com.electricity.monitoring.tokens.TokenActivity;
@@ -67,7 +64,22 @@ public class HomeActivity extends BaseActivity {
         dbHandler = new DBHandler(HomeActivity.this);
 
         String threshold = dbHandler.checkThreshold();
-
+//        String alarm = dbHandler.checkAlarm();
+//
+//        if (Double.parseDouble(threshold) < Double.parseDouble(alarm)) {
+//            Intent intent = new Intent(HomeActivity.this, MyBroadcastReceiver.class);
+//            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+//                    HomeActivity.this, 234324243, intent, PendingIntent.FLAG_IMMUTABLE
+//            );
+//            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//            alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), pendingIntent);
+//
+//            dbHandler.checkAlarm();
+//
+//            sendNotification("Threshold reminder", "This is a reminder that you are left with less than " + alarm + "KWh");
+//        } else {
+//            sendNotification("Remaining Threshold", "Your remaining power is : " + threshold + "KWh");
+//        }
         sendNotification("Remaining Threshold", "Your remaining power is : " + threshold + "KWh");
 
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
