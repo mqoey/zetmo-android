@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "855234514071",
+    "project_id": "zetmo-6991a",
+    "storage_bucket": "zetmo-6991a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855234514071:android:4acf185a8887de3b402dd2",
+        "android_client_info": {
+          "package_name": "com.electricity.monitoring"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "855234514071-d4rj6j2p15bvqb0ui4cir94ck1o2gac7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvELBhrh5V8m-YAY61hUH6t3RaA19Y4a0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "855234514071-d4rj6j2p15bvqb0ui4cir94ck1o2gac7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
