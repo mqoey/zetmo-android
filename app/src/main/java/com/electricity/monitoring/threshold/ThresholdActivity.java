@@ -57,7 +57,7 @@ public class ThresholdActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 //                sendNotification("title", "body body");
-                Intent intent = new Intent(ThresholdActivity.this, CalculateThresholdActivity.class);
+                Intent intent = new Intent(ThresholdActivity.this, SetAlarmActivity.class);
                 startActivity(intent);
             }
         });

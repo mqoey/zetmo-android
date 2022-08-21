@@ -1,5 +1,6 @@
 package com.electricity.monitoring.threshold;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -7,15 +8,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.electricity.monitoring.HomeActivity;
 import com.electricity.monitoring.R;
 import com.electricity.monitoring.database.DBHandler;
 
-public class CalculateThresholdActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+import es.dmoral.toasty.Toasty;
+
+public class SetAlarmActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     TextView btnCalculate;
     EditText amount;
@@ -35,13 +38,16 @@ public class CalculateThresholdActivity extends AppCompatActivity implements Ada
         btnCalculate = findViewById(R.id.btn_purchase);
         amount = findViewById(R.id.etxt_amount1);
 
-        dbHandler = new DBHandler(CalculateThresholdActivity.this);
+        dbHandler = new DBHandler(SetAlarmActivity.this);
 
         btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(CalculateThresholdActivity.this, amount.getText().toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(CalculateThresholdActivity.this, amount.getText().toString(), Toast.LENGTH_SHORT).show();
                 dbHandler.addAlarm(amount.getText().toString());
+                Toasty.success(SetAlarmActivity.this, "Alarm will alert when " + amount.getText().toString() + " KWh is left").show();
+                Intent intent = new Intent(SetAlarmActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
     }

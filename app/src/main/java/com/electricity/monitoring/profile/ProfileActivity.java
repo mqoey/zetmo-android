@@ -14,6 +14,7 @@ import com.electricity.monitoring.R;
 import com.electricity.monitoring.database.DBHandler;
 import com.electricity.monitoring.model.Neighbourhood;
 import com.electricity.monitoring.model.User;
+import com.electricity.monitoring.neighbourhood.ChoseNeighbourhoodActivity;
 import com.electricity.monitoring.neighbourhood.NeighbourhoodActivity;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
     DBHandler dbHandler;
     ArrayList<User> userArrayList;
     ArrayList<Neighbourhood> neighbourhoodArrayList;
-    Button btnChooseNeighbourhood;
+    Button btnChooseNeighbourhood, btnYourNeighbourhood;
     ProgressDialog loading;
 
     @Override
@@ -33,6 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         btnChooseNeighbourhood = findViewById(R.id.btn_choose_neighbourhood);
+        btnYourNeighbourhood = findViewById(R.id.btn_your_neighbourhoods);
 
         getSupportActionBar().setHomeButtonEnabled(true); //for back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//for back button
@@ -43,6 +45,14 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProfileActivity.this, NeighbourhoodActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnYourNeighbourhood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, ChoseNeighbourhoodActivity.class);
                 startActivity(intent);
             }
         });
@@ -60,17 +70,17 @@ public class ProfileActivity extends AppCompatActivity {
         userArrayList = dbHandler.getUser();
         neighbourhoodArrayList = dbHandler.getNeighbourhood();
 
-        boolean neighbourhoodStatus = dbHandler.checkNeighbourhood();
-        if (neighbourhoodStatus) {
-            btnChooseNeighbourhood.setEnabled(false);
-            txt_neighbourhood.setText("Neighbourhood : " + neighbourhoodArrayList.get(0).getName());
-            txt_area.setText("Area : " + neighbourhoodArrayList.get(0).getArea());
-            txt_municipality.setText("Municipality : " + neighbourhoodArrayList.get(0).getMunicipality());
-        } else {
-            txt_neighbourhood.setText("");
-            txt_area.setText("");
-            txt_municipality.setText("");
-        }
+//        boolean neighbourhoodStatus = dbHandler.checkNeighbourhood();
+//        if (neighbourhoodStatus) {
+//            btnChooseNeighbourhood.setEnabled(false);
+//            txt_neighbourhood.setText("Neighbourhood : " + neighbourhoodArrayList.get(0).getName());
+//            txt_area.setText("Area : " + neighbourhoodArrayList.get(0).getArea());
+//            txt_municipality.setText("Municipality : " + neighbourhoodArrayList.get(0).getMunicipality());
+//        } else {
+//            txt_neighbourhood.setText("");
+//            txt_area.setText("");
+//            txt_municipality.setText("");
+//        }
 
         String name = userArrayList.get(0).getName();
         String email = userArrayList.get(0).getEmail();

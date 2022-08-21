@@ -110,32 +110,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:paddingLeft="10dp">
-
-                <TextView
-                    android:id="@+id/txt_neighbourhood_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Neighbouhood"
-                    android:textSize="22sp" />
-
-                <TextView
-                    android:id="@+id/txt_neighbourhood_area"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:text="Area "
-                    android:textSize="22sp" />
-
-                <TextView
-                    android:id="@+id/txt_neighbourhood_municipality"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:text="Municipality"
-                    android:textSize="22sp" />
-
-            </LinearLayout>
+                android:paddingLeft="10dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,7 +131,25 @@
                         android:layout_marginTop="4dp"
                         android:background="@color/red"
                         android:padding="10dp"
-                        android:text="Choose Neighbourhood"
+                        android:text="Add Neighbourhood"
+                        android:textColor="#fff"
+                        android:textStyle="bold" />
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    style="@style/RippleStyleWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/btn_your_neighbourhoods"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/red"
+                        android:padding="10dp"
+                        android:text="Your Neighbourhood"
                         android:textColor="#fff"
                         android:textStyle="bold" />
                 </com.balysv.materialripple.MaterialRippleLayout>

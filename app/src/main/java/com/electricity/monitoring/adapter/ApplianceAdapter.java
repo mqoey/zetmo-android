@@ -1,5 +1,9 @@
 package com.electricity.monitoring.adapter;
 
+import static android.content.Context.ALARM_SERVICE;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.electricity.monitoring.Constant;
+import com.electricity.monitoring.MyBroadcastReceiver;
 import com.electricity.monitoring.R;
 import com.electricity.monitoring.appliance.ViewApplianceActivity;
 import com.electricity.monitoring.database.DBHandler;
@@ -102,7 +107,7 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
                             Calendar calendar = Calendar.getInstance();
                             String time = mdformat.format(calendar.getTime());
                             endTime = mdformat.parse(time);
-                        }else {
+                        } else {
                             endTime = mdformat.parse(end_time);
                         }
                     } catch (ParseException e) {
@@ -143,6 +148,23 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
 
                     dbHandler.stopApplianceTimer(applianceID, date, String.valueOf(consumption), duration);
                     sp.edit().putBoolean("isChecked" + applianceID, false).apply();
+
+//                    try try try
+
+                    String threshold = dbHandler.checkThreshold();
+                    String alarm = dbHandler.checkAlarm();
+
+                    if (Double.parseDouble(threshold) < Double.parseDouble(alarm)) {
+                        Intent intent = new Intent(context, MyBroadcastReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                context, 0, intent, PendingIntent.FLAG_IMMUTABLE
+                        );
+                        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
+
+                        dbHandler.checkAlarm();
+                    }
+
                 }
             }
         });

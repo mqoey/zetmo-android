@@ -3,10 +3,12 @@ package com.electricity.monitoring;
 import static com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype.Slidetop;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +43,8 @@ public class HomeActivity extends BaseActivity {
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     DBHandler dbHandler;
+    ProgressDialog loading;
+    String alarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,26 +65,56 @@ public class HomeActivity extends BaseActivity {
         cardLoadShedding = findViewById(R.id.card_loadshedding);
         cardStage = findViewById(R.id.card_stages);
 
+        alarm = "m";
+
         dbHandler = new DBHandler(HomeActivity.this);
 
         String threshold = dbHandler.checkThreshold();
-//        String alarm = dbHandler.checkAlarm();
-//
-//        if (Double.parseDouble(threshold) < Double.parseDouble(alarm)) {
-//            Intent intent = new Intent(HomeActivity.this, MyBroadcastReceiver.class);
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(
-//                    HomeActivity.this, 234324243, intent, PendingIntent.FLAG_IMMUTABLE
-//            );
-//            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//            alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), pendingIntent);
-//
-//            dbHandler.checkAlarm();
-//
-//            sendNotification("Threshold reminder", "This is a reminder that you are left with less than " + alarm + "KWh");
-//        } else {
-//            sendNotification("Remaining Threshold", "Your remaining power is : " + threshold + "KWh");
-//        }
-        sendNotification("Remaining Threshold", "Your remaining power is : " + threshold + "KWh");
+        alarm = dbHandler.checkAlarm();
+
+        if(alarm.isEmpty() || alarm == null)
+        {
+            sendNotification("Remaining Threshold", "Your remaining power is : " + threshold + "KWh");
+        }
+        else {
+        if (Double.parseDouble(threshold) < Double.parseDouble(alarm)) {
+            Intent intent = new Intent(HomeActivity.this, MyBroadcastReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    HomeActivity.this, 234324243, intent, PendingIntent.FLAG_IMMUTABLE
+            );
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), pendingIntent);
+
+            dbHandler.checkAlarm();
+
+            NiftyDialogBuilder dialogBuilder = NiftyDialogBuilder.getInstance(HomeActivity.this);
+            dialogBuilder
+                    .withTitle("Threshold reminder")
+                    .withMessage("This is a reminder that you are left with less than " + alarm + "KWh")
+                    .withEffect(Slidetop)
+                    .withDialogColor("#637ECF") //use color code for dialog
+                    .withButton1Text("Dismiss")
+                    .withButton2Text("Snooze")
+                    .setButton1Click(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dbHandler.updateAlarm();
+                            dialogBuilder.dismiss();
+                        }
+                    })
+                    .setButton2Click(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogBuilder.dismiss();
+                        }
+                    })
+                    .show();
+
+            sendNotification("Threshold reminder", "This is a reminder that you are left with less than " + alarm + "KWh");
+        } else {
+            sendNotification("Remaining Threshold", "Your remaining power is : " + threshold + "KWh");
+        }
+        }
 
         sp = getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sp.edit();

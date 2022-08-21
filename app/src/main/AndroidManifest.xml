@@ -26,6 +26,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".neighbourhood.ChoseNeighbourhoodActivity"
+            android:exported="false" />
+        <activity
             android:name=".neighbourhood.NeighbourhoodStageActivity"
             android:exported="false" />
         <activity
@@ -38,10 +41,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".MyBroadcastReceiver">
-
-        </receiver>
-
+        <receiver android:name=".MyBroadcastReceiver"></receiver>
 
         <activity
             android:name=".stage.LoadsheddingActivity"
@@ -50,7 +50,7 @@
             android:name=".stage.StageActivity"
             android:exported="true" />
         <activity
-            android:name=".threshold.CalculateThresholdActivity"
+            android:name=".threshold.SetAlarmActivity"
             android:exported="false" />
         <activity
             android:name=".threshold.ThresholdActivity"
